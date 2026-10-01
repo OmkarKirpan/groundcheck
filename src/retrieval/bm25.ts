@@ -10,11 +10,19 @@ const STOPWORDS = new Set(
     .split(' '),
 );
 
+/** Plural to singular, nothing more: a full stemmer isn't needed for a 30-doc corpus. */
+function singular(t: string): string {
+  if (t.length > 4 && t.endsWith('ies')) return `${t.slice(0, -3)}y`;
+  if (t.length > 3 && t.endsWith('s') && !/(ss|us|is)$/.test(t)) return t.slice(0, -1);
+  return t;
+}
+
 export function tokenize(text: string): string[] {
   return text
     .toLowerCase()
     .split(/[^a-z0-9]+/)
-    .filter((t) => t && !STOPWORDS.has(t));
+    .filter((t) => t && !STOPWORDS.has(t))
+    .map(singular);
 }
 
 export interface Hit {

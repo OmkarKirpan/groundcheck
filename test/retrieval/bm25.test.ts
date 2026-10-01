@@ -5,7 +5,16 @@ const chunk = (docId: string, text: string, title = docId) => ({ docId, title, i
 
 describe('tokenize', () => {
   it('lowercases, splits on non-alphanumerics and drops stopwords', () => {
-    expect(tokenize('How many DAYS of leave do I get? (2026)')).toEqual(['many', 'days', 'leave', 'get', '2026']);
+    expect(tokenize('How many DAYS of leave do I get? (2026)')).toEqual(['many', 'day', 'leave', 'get', '2026']);
+  });
+
+  // Found by eval run 2026-10-01T05-53: "password" missed "Passwords" (c014), "meal" missed "meals" (c021).
+  it('reduces plurals to the singular', () => {
+    expect(tokenize('Passwords meals policies')).toEqual(['password', 'meal', 'policy']);
+  });
+
+  it('leaves words that only look plural alone', () => {
+    expect(tokenize('access status analysis bus')).toEqual(['access', 'status', 'analysis', 'bus']);
   });
 });
 
@@ -44,6 +53,11 @@ describe('bm25', () => {
   it('matches the title as well as the body', () => {
     const hits = bm25('travel', [chunk('t', 'Book through the portal.', 'Travel Policy'), chunks[0]!], 5);
     expect(hits[0]?.chunk.docId).toBe('t');
+  });
+
+  it('matches a singular query against a plural in the text', () => {
+    const hits = bm25('minimum password length', [chunk('sec', 'Passwords must be at least 14 characters long.'), chunks[0]!], 5);
+    expect(hits[0]?.chunk.docId).toBe('sec');
   });
 
   it('returns nothing for an empty or stopword-only query', () => {
