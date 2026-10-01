@@ -54,9 +54,9 @@ Baseline run [`2026-10-01T06-00`](results/2026-10-01T06-00.md), next to the firs
 | p95 latency per case | 17.8 s | 15.0 s |
 | Judge J1 faithfulness (1–4) | not run | 3.90 (96.7 / 100) |
 | Judge J2 correctness (1–4) | not run | 3.50 (83.3 / 100) |
-| Judge agreement with human labels | — | pending the 20 blind labels |
+| Judge agreement with 20 blind human labels | — | **97.5%** (J1 100%, J2 95%) |
 
-Until the judge's agreement with the human labels is measured, its scores are reported but not yet trusted. The 100% grounded rate is not 100% correct: see c023 below.
+The 100% grounded rate is not 100% correct: the judge marks 3 answers wrong (J2 = 1) that pass every check in code. See findings 3 and 4.
 
 ## What the evals found
 
@@ -64,7 +64,16 @@ Until the judge's agreement with the human labels is measured, its scores are re
 
 **2. A real quote is not a right answer (c030).** Asked *"How many days of paid sick leave do employees get?"*, which no document answers, the agent replied *"Full-time employees receive 24 days of paid annual leave per calendar year."* It cited the current Leave Policy with a word-for-word quote. Every grounding check passes (G1–G4): the doc exists, the quote is real, the employee may see it, and it's the current version. Only G5 catches it, because the case is marked must-refuse. The 2B model answered the nearest question it could ground, not the one asked.
 
-**3. It took the FAQ's number over the policy's (c023).** Asked for the hotel limit per night, the agent opened the Travel FAQ and answered *EUR 180*, quoting it exactly. The Travel Policy says EUR 220, and the Document Precedence policy says *"If a policy and an FAQ disagree, the policy wins."* **Every check in code passes**, and the case even counts toward the 100% grounded rate: the doc is real, the quote is verbatim, it's allowed, and an FAQ isn't "superseded". Only a correctness check against the expected answer can catch this, which is the judge's job (J2).
+**3. It took the FAQ's number over the policy's (c023).** Asked for the hotel limit per night, the agent opened the Travel FAQ and answered *EUR 180*, quoting it exactly. The Travel Policy says EUR 220, and the Document Precedence policy says *"If a policy and an FAQ disagree, the policy wins."* **Every check in code passes**, and the case even counts toward the 100% grounded rate: the doc is real, the quote is verbatim, it's allowed, and an FAQ isn't "superseded". Only a correctness check against the expected answer can catch this, and the judge did: J2 = 1, *"it gives EUR 180 while the expected answer states EUR 220 (policy overrides FAQ)"*.
+
+**4. It quoted the right sentence for the wrong conclusion (c017).** Asked whether a conference ticket can come out of the learning budget, the agent quoted *"Travel to a conference is paid from the travel budget, not the learning budget."* and implied the answer was no. The same policy says the budget covers *"courses, certifications, books and conference tickets"*. The quote is real, so all seven checks pass; the judge caught it (J2 = 1).
+
+### What checking the judge found
+
+The judge agreed with the blind human labels on 39 of 40 calls (97.5%), above the 80% bar. Two honest caveats:
+
+- **The one disagreement is a rubric gap, not noise (c015).** The question asked two things; the agent answered one. The judge's own rationale says *"partially correct"*, yet it scored 3 (a pass), because the rubric's level 3 allows a missing "secondary detail". For a two-part question, a missing part isn't secondary. The fix is a rubric rule that each part of a multi-part question counts as a main fact; it means a `judge-v2` prompt and a full re-judge.
+- **J1's 100% agreement is weak evidence.** None of the 20 labelled answers was unfaithful (the agent invented no quotes), so the sample can't show whether the judge would catch an unfaithful one.
 
 ## Run it
 
@@ -104,7 +113,7 @@ Every design choice and its reason is in [docs/decisions.md](docs/decisions.md);
 
 Built with Claude Opus 5.5 writing the code test-first. The two checks that make the numbers mean anything are done by a person: every expected answer is checked against its source ([`cases/gold-review.md`](cases/gold-review.md)), and the 20 judge-check labels are written blind ([`cases/labeling-sheet.md`](cases/labeling-sheet.md)).
 
-**Status, 2026-10-01:** the judge has run on the baseline; the expected-answer review and the 20 blind labels are still to do.
+**Status, 2026-10-01:** the judge has run on the baseline and the 20 blind labels are written; the expected-answer review is still to do.
 
 ## Licence
 

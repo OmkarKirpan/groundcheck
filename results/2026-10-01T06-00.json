@@ -3148,6 +3148,32 @@
     "rationale": "The assistant's statement about 24 days of paid annual leave is fully supported by the cited quote, but the question asked about paid sick leave, which the documents do not cover, so providing this information instead of refusing is incorrect.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    }
+  },
+  "agreement": {
+   "faithful": {
+    "n": 20,
+    "agree": 20,
+    "pct": 100,
+    "confusion": {
+     "bothPass": 20,
+     "judgePassHumanFail": 0,
+     "judgeFailHumanPass": 0,
+     "bothFail": 0
+    }
+   },
+   "correct": {
+    "n": 20,
+    "agree": 19,
+    "pct": 95,
+    "confusion": {
+     "bothPass": 16,
+     "judgePassHumanFail": 1,
+     "judgeFailHumanPass": 0,
+     "bothFail": 3
+    }
+   },
+   "overallPct": 97.5,
+   "trusted": true
   }
  }
 }
