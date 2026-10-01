@@ -1,0 +1,127 @@
+{
+ "kind": "agent",
+ "key": "614626dcb6d74a00",
+ "request": {
+  "model": "gemma4:e2b",
+  "messages": [
+   {
+    "role": "system",
+    "content": "You are the document assistant for Halvicor Systems. You answer questions using only the company documents you can reach with your tools. The user's access level decides which documents you can see.\n\nHow to work:\n1. Call search_docs first. Use open_doc to read a whole document when a snippet is not enough or when you need to check its status.\n2. Prefer documents with status \"current\". Never rely on a document with status \"superseded\" when a current version exists.\n3. Finish by calling final_answer. You have at most 5 tool calls in total, including final_answer.\n\nRules for final_answer:\n- Use only facts stated in the documents. Do not use outside knowledge.\n- Give at least one citation. Each quote must be copied exactly, word for word, from the cited document.\n- If the documents do not answer the question, or a document you need is not available to you, call final_answer with refusal set to true and a short reason. Do not guess."
+   },
+   {
+    "role": "user",
+    "content": "We just resolved a SEV1. When is the postmortem due, and can we deploy the fix on Friday afternoon?"
+   }
+  ],
+  "tools": [
+   {
+    "type": "function",
+    "function": {
+     "name": "search_docs",
+     "description": "Keyword search over the company documents you are allowed to see. Returns up to 5 matching paragraphs.",
+     "parameters": {
+      "type": "object",
+      "properties": {
+       "query": {
+        "type": "string",
+        "description": "Keywords to search for."
+       }
+      },
+      "required": [
+       "query"
+      ]
+     }
+    }
+   },
+   {
+    "type": "function",
+    "function": {
+     "name": "open_doc",
+     "description": "Read a whole document, including its version and status (current or superseded).",
+     "parameters": {
+      "type": "object",
+      "properties": {
+       "docId": {
+        "type": "string",
+        "description": "The docId from a search result."
+       }
+      },
+      "required": [
+       "docId"
+      ]
+     }
+    }
+   },
+   {
+    "type": "function",
+    "function": {
+     "name": "final_answer",
+     "description": "Finish with an answer and its citations, or with a refusal.",
+     "parameters": {
+      "type": "object",
+      "properties": {
+       "answer": {
+        "type": "string",
+        "description": "The answer, using only facts from the documents."
+       },
+       "citations": {
+        "type": "array",
+        "description": "At least one source. Each quote must be copied exactly, word for word, from the document.",
+        "items": {
+         "type": "object",
+         "properties": {
+          "docId": {
+           "type": "string"
+          },
+          "quote": {
+           "type": "string"
+          }
+         },
+         "required": [
+          "docId",
+          "quote"
+         ]
+        }
+       },
+       "refusal": {
+        "type": "boolean",
+        "description": "Set to true when the documents do not answer the question."
+       },
+       "reason": {
+        "type": "string",
+        "description": "Why you are refusing."
+       }
+      }
+     }
+    }
+   }
+  ],
+  "options": {
+   "temperature": 0,
+   "num_ctx": 8192,
+   "seed": 0
+  },
+  "think": false
+ },
+ "response": {
+  "message": {
+   "role": "assistant",
+   "content": "",
+   "tool_calls": [
+    {
+     "id": "call_0m0kos6b",
+     "function": {
+      "index": 0,
+      "name": "search_docs",
+      "arguments": {
+       "query": "SEV1 postmortem due date deployment schedule"
+      }
+     }
+    }
+   ]
+  },
+  "tokensIn": 565,
+  "tokensOut": 23,
+  "latencyMs": 2905
+ }
+}

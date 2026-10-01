@@ -1,13 +1,13 @@
 {
-  "runId": "2026-10-01T05-53",
+  "runId": "2026-10-01T06-00",
   "metrics": {
-    "groundedRate": 90.91,
-    "citationPrecision": 92.31,
+    "groundedRate": 100,
+    "citationPrecision": 92.86,
     "aclViolations": 0,
     "inventedQuotes": 0,
-    "avgSteps": 3.2,
-    "totalTokens": 87068,
-    "p95LatencyMs": 17819,
+    "avgSteps": 3.17,
+    "totalTokens": 86810,
+    "p95LatencyMs": 14954,
     "j1Mean": null,
     "j2Mean": null
   }

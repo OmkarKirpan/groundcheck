@@ -1,0 +1,201 @@
+{
+ "kind": "agent",
+ "key": "59357704a6f2a40f",
+ "request": {
+  "model": "gemma4:e2b",
+  "messages": [
+   {
+    "role": "system",
+    "content": "You are the document assistant for Halvicor Systems. You answer questions using only the company documents you can reach with your tools. The user's access level decides which documents you can see.\n\nHow to work:\n1. Call search_docs first. Use open_doc to read a whole document when a snippet is not enough or when you need to check its status.\n2. Prefer documents with status \"current\". Never rely on a document with status \"superseded\" when a current version exists.\n3. Finish by calling final_answer. You have at most 5 tool calls in total, including final_answer.\n\nRules for final_answer:\n- Use only facts stated in the documents. Do not use outside knowledge.\n- Give at least one citation. Each quote must be copied exactly, word for word, from the cited document.\n- If the documents do not answer the question, or a document you need is not available to you, call final_answer with refusal set to true and a short reason. Do not guess."
+   },
+   {
+    "role": "user",
+    "content": "What is the L2 base salary range, and how many people on a team can get the top performance rating?"
+   },
+   {
+    "role": "assistant",
+    "content": "",
+    "tool_calls": [
+     {
+      "id": "call_g0jj5uyo",
+      "function": {
+       "index": 0,
+       "name": "search_docs",
+       "arguments": {
+        "query": "L2 base salary range and top performance rating"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "role": "tool",
+    "tool_name": "search_docs",
+    "content": "[{\"docId\":\"hr-comp-bands\",\"title\":\"Compensation Bands 2026\",\"snippet\":\"## Engineering bands\\n\\nThe L1 base salary range is EUR 48,000 to EUR 58,000. The L2 base salary range is EUR 58,000 to EUR 72,000. The L3 base salary range is EUR 72,000 to EUR 90,000. The L4 base salary range is EUR 90,000 to EUR 112,000. The L5 base salary range is EUR 112,000 to EUR 140,000.\",\"score\":17.09},{\"docId\":\"hr-comp-bands\",\"title\":\"Compensation Bands 2026\",\"snippet\":\"## Adjustments\\n\\nAnnual salary adjustments are capped at 8 percent of base salary unless the employee changes level. Offers above the top of a band need approval from the Chief People Officer.\",\"score\":10.609},{\"docId\":\"faq-benefits\",\"title\":\"Benefits FAQ\",\"snippet\":\"## Pension\\n\\nHalvicor matches pension contributions up to 5 percent of base salary.\",\"score\":7.723},{\"docId\":\"mgr-performance-calibration\",\"title\":\"Performance Calibration Guide 2026\",\"snippet\":\"## Calibration\\n\\nCalibration meetings take place in the first two weeks of December. Performance ratings must be final by 20 December.\",\"score\":7.435},{\"docId\":\"mgr-performance-calibration\",\"title\":\"Performance Calibration Guide 2026\",\"snippet\":\"## Rating scale\\n\\nRatings use a scale from 1 to 5, where 5 is the highest. No more than 15 percent of a team may be rated 5.\",\"score\":7.14}]"
+   },
+   {
+    "role": "assistant",
+    "content": "",
+    "tool_calls": [
+     {
+      "id": "call_d1op68h6",
+      "function": {
+       "index": 0,
+       "name": "open_doc",
+       "arguments": {
+        "docId": "hr-comp-bands"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "role": "tool",
+    "tool_name": "open_doc",
+    "content": "{\"docId\":\"hr-comp-bands\",\"title\":\"Compensation Bands 2026\",\"version\":1,\"status\":\"current\",\"body\":\"# Compensation Bands 2026\\n\\nConfidential. Visible to HR administrators only.\\n\\n## Engineering bands\\n\\nThe L1 base salary range is EUR 48,000 to EUR 58,000. The L2 base salary range is EUR 58,000 to EUR 72,000. The L3 base salary range is EUR 72,000 to EUR 90,000. The L4 base salary range is EUR 90,000 to EUR 112,000. The L5 base salary range is EUR 112,000 to EUR 140,000.\\n\\n## Adjustments\\n\\nAnnual salary adjustments are capped at 8 percent of base salary unless the employee changes level. Offers above the top of a band need approval from the Chief People Officer.\"}"
+   },
+   {
+    "role": "assistant",
+    "content": "",
+    "tool_calls": [
+     {
+      "id": "call_dxqu9hau",
+      "function": {
+       "index": 0,
+       "name": "open_doc",
+       "arguments": {
+        "docId": "mgr-performance-calibration"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "role": "tool",
+    "tool_name": "open_doc",
+    "content": "{\"docId\":\"mgr-performance-calibration\",\"title\":\"Performance Calibration Guide 2026\",\"version\":1,\"status\":\"current\",\"body\":\"# Performance Calibration Guide 2026\\n\\nFor people managers and HR only.\\n\\n## Rating scale\\n\\nRatings use a scale from 1 to 5, where 5 is the highest. No more than 15 percent of a team may be rated 5.\\n\\n## Calibration\\n\\nCalibration meetings take place in the first two weeks of December. Performance ratings must be final by 20 December.\\n\\n## Communication\\n\\nManagers share final ratings with each employee in a one-to-one meeting in January.\"}"
+   }
+  ],
+  "tools": [
+   {
+    "type": "function",
+    "function": {
+     "name": "search_docs",
+     "description": "Keyword search over the company documents you are allowed to see. Returns up to 5 matching paragraphs.",
+     "parameters": {
+      "type": "object",
+      "properties": {
+       "query": {
+        "type": "string",
+        "description": "Keywords to search for."
+       }
+      },
+      "required": [
+       "query"
+      ]
+     }
+    }
+   },
+   {
+    "type": "function",
+    "function": {
+     "name": "open_doc",
+     "description": "Read a whole document, including its version and status (current or superseded).",
+     "parameters": {
+      "type": "object",
+      "properties": {
+       "docId": {
+        "type": "string",
+        "description": "The docId from a search result."
+       }
+      },
+      "required": [
+       "docId"
+      ]
+     }
+    }
+   },
+   {
+    "type": "function",
+    "function": {
+     "name": "final_answer",
+     "description": "Finish with an answer and its citations, or with a refusal.",
+     "parameters": {
+      "type": "object",
+      "properties": {
+       "answer": {
+        "type": "string",
+        "description": "The answer, using only facts from the documents."
+       },
+       "citations": {
+        "type": "array",
+        "description": "At least one source. Each quote must be copied exactly, word for word, from the document.",
+        "items": {
+         "type": "object",
+         "properties": {
+          "docId": {
+           "type": "string"
+          },
+          "quote": {
+           "type": "string"
+          }
+         },
+         "required": [
+          "docId",
+          "quote"
+         ]
+        }
+       },
+       "refusal": {
+        "type": "boolean",
+        "description": "Set to true when the documents do not answer the question."
+       },
+       "reason": {
+        "type": "string",
+        "description": "Why you are refusing."
+       }
+      }
+     }
+    }
+   }
+  ],
+  "options": {
+   "temperature": 0,
+   "num_ctx": 8192,
+   "seed": 0
+  },
+  "think": false
+ },
+ "response": {
+  "message": {
+   "role": "assistant",
+   "content": "",
+   "tool_calls": [
+    {
+     "id": "call_iiwmcs9q",
+     "function": {
+      "index": 0,
+      "name": "final_answer",
+      "arguments": {
+       "answer": "The L2 base salary range is EUR 58,000 to EUR 72,000. No more than 15 percent of a team may be rated 5 (the top performance rating).",
+       "citations": [
+        {
+         "docId": "hr-comp-bands",
+         "quote": "The L2 base salary range is EUR 58,000 to EUR 72,000."
+        },
+        {
+         "docId": "mgr-performance-calibration",
+         "quote": "No more than 15 percent of a team may be rated 5."
+        }
+       ],
+       "reason": "The user asked for two distinct pieces of information: the L2 base salary range and the number of people who can get the top performance rating. The documents provided the salary range from 'hr-comp-bands' and the limit for the top rating from 'mgr-performance-calibration'."
+      }
+     }
+    }
+   ]
+  },
+  "tokensIn": 1461,
+  "tokensOut": 199,
+  "latencyMs": 7152
+ }
+}
