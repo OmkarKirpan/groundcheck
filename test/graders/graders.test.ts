@@ -202,7 +202,7 @@ describe('G7 no loop', () => {
 });
 
 describe('gradeAll', () => {
-  it('runs G1 to G7 in order', () => {
+  it('runs G1 to G8 in order', () => {
     const results = gradeAll(input(answered([cite('leave-v2', 'Carryover is 8 days.')])));
     expect(results.map((r) => [r.id, r.verdict])).toEqual([
       ['G1', 'pass'],
@@ -212,6 +212,7 @@ describe('gradeAll', () => {
       ['G5', 'pass'],
       ['G6', 'pass'],
       ['G7', 'pass'],
+      ['G8', 'pass'],
     ]);
   });
 });

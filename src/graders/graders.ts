@@ -3,8 +3,9 @@ import type { AgentRun } from '../agent/loop.ts';
 import { MAX_STEPS } from '../agent/prompt.ts';
 import type { Doc } from '../retrieval/corpus.ts';
 import type { Case } from '../runner/cases.ts';
+import { winner, type Conflict } from './precedence.ts';
 
-export type GraderId = 'G1' | 'G2' | 'G3' | 'G4' | 'G5' | 'G6' | 'G7';
+export type GraderId = 'G1' | 'G2' | 'G3' | 'G4' | 'G5' | 'G6' | 'G7' | 'G8';
 export type Verdict = 'pass' | 'fail' | 'n/a';
 
 export interface Grade {
@@ -19,6 +20,8 @@ export interface GradeInput {
   kase: Case;
   run: AgentRun;
   corpus: readonly Doc[];
+  /** Known conflicting statements, for G8. */
+  conflicts?: readonly Conflict[];
 }
 
 const pass = (id: GraderId, count?: number): Grade => (count === undefined ? { id, verdict: 'pass' } : { id, verdict: 'pass', count });
@@ -123,6 +126,34 @@ export function g7NoLoop({ run }: GradeInput): Grade {
   return repeated.length ? fail('G7', `repeated search: ${unique(repeated).map((q) => `"${q}"`).join(', ')}`) : pass('G7');
 }
 
+/** Fails when the losing side of a known conflict is cited and the winning side (that the role can see) is not. */
+export function g8PrecedenceRespected({ kase, run, corpus, conflicts = [] }: GradeInput): Grade {
+  const cits = citationsOf(run);
+  if (!cits) return notApplicable('G8');
+  const visible = new Map(corpus.filter((d) => d.rolesAllowed.includes(kase.role)).map((d) => [d.id, d]));
+  // A citation touches a side if its quote is that sentence, part of it, or contains it.
+  const touches = (side: { docId: string; text: string }) =>
+    cits.some((c) => {
+      if (c.docId !== side.docId) return false;
+      const [q, t] = [normalise(c.quote), normalise(side.text)];
+      return q.length > 0 && (t.includes(q) || q.includes(t));
+    });
+
+  const broken: string[] = [];
+  for (const conflict of conflicts) {
+    const [a, b] = conflict.sides.map((s) => visible.get(s.docId));
+    if (!a || !b) continue;
+    const win = winner(a, b);
+    if (!win) continue;
+    const winSide = conflict.sides.find((s) => s.docId === win.id)!;
+    const loseSide = conflict.sides.find((s) => s.docId !== win.id)!;
+    if (touches(loseSide) && !touches(winSide)) {
+      broken.push(`cited ${loseSide.docId} "${short(loseSide.text)}" but ${winSide.docId} takes precedence (${conflict.id})`);
+    }
+  }
+  return broken.length ? fail('G8', broken.join('; ')) : pass('G8');
+}
+
 export const GRADERS = [
   g1CitationExists,
   g2QuoteVerbatim,
@@ -131,6 +162,7 @@ export const GRADERS = [
   g5CorrectRefusal,
   g6StepBudget,
   g7NoLoop,
+  g8PrecedenceRespected,
 ] as const;
 
 export const gradeAll = (input: GradeInput): Grade[] => GRADERS.map((g) => g(input));

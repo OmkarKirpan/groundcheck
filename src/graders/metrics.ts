@@ -11,7 +11,7 @@ export interface CaseResult {
 
 export interface Metrics {
   cases: number;
-  /** Answerable cases that were answered with G1–G4 all passing, 0–100. */
+  /** Answerable cases that were answered with G1–G4 and G8 all passing, 0–100. */
   groundedRate: number;
   /** Unique cited docs per case that are in goldDocIds, 0–100. Null when nothing was cited. */
   citationPrecision: number | null;
@@ -42,7 +42,7 @@ const citedDocs = (run: AgentRun) => (run.final?.kind === 'answer' ? [...new Set
 export function computeMetrics(results: CaseResult[]): Metrics {
   const answerable = results.filter((r) => !r.mustRefuse);
   const grounded = answerable.filter(
-    (r) => r.run.final?.kind === 'answer' && (['G1', 'G2', 'G3', 'G4'] as const).every((id) => verdict(r, id) === 'pass'),
+    (r) => r.run.final?.kind === 'answer' && (['G1', 'G2', 'G3', 'G4', 'G8'] as const).every((id) => verdict(r, id) === 'pass'),
   );
 
   let cited = 0;
@@ -54,7 +54,7 @@ export function computeMetrics(results: CaseResult[]): Metrics {
   }
 
   const graders = {} as Metrics['graders'];
-  for (const id of ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7'] as const) {
+  for (const id of ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8'] as const) {
     const vs = results.map((r) => verdict(r, id));
     graders[id] = { pass: vs.filter((v) => v === 'pass').length, fail: vs.filter((v) => v === 'fail').length, na: vs.filter((v) => v === 'n/a').length };
   }

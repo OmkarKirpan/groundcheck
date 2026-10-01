@@ -6,6 +6,7 @@ import { computeMetrics, type CaseResult, type Metrics } from '../graders/metric
 import { normaliseJudge } from '../gate/gate.ts';
 import { MIN_AGREEMENT_PCT, type Agreement } from '../judge/agreement.ts';
 import type { JudgeSection } from '../judge/run.ts';
+import type { Conflict } from '../graders/precedence.ts';
 import type { Doc } from '../retrieval/corpus.ts';
 import type { Case } from './cases.ts';
 
@@ -29,6 +30,7 @@ export async function runEval(input: {
   cases: Case[];
   corpus: readonly Doc[];
   client: ModelClient;
+  conflicts?: readonly Conflict[];
   onCase?: (outcome: CaseOutcome) => void;
 }): Promise<CaseOutcome[]> {
   const outcomes: CaseOutcome[] = [];
@@ -42,7 +44,7 @@ export async function runEval(input: {
       mustRefuse: kase.mustRefuse,
       goldDocIds: kase.goldDocIds,
       run,
-      grades: gradeAll({ kase, run, corpus: input.corpus }),
+      grades: gradeAll({ kase, run, corpus: input.corpus, conflicts: input.conflicts }),
     };
     outcomes.push(outcome);
     input.onCase?.(outcome);
@@ -68,6 +70,7 @@ const GRADER_NAMES: Record<string, string> = {
   G5: 'correct refusal',
   G6: 'step budget',
   G7: 'no loop',
+  G8: 'precedence respected',
 };
 
 const cell = (s: string) => s.replace(/\|/g, '\\|').replace(/\n/g, ' ');

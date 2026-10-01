@@ -14,7 +14,7 @@ const step = (latencyMs: number, tokensIn = 100, tokensOut = 10): TraceStep => (
 });
 
 const grades = (overrides: Partial<Record<GraderId, [Verdict, number?]>> = {}): Grade[] =>
-  (['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7'] as const).map((id) => {
+  (['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8'] as const).map((id) => {
     const [verdict, count] = overrides[id] ?? ['pass'];
     return count === undefined ? { id, verdict } : { id, verdict, count };
   });
@@ -52,6 +52,11 @@ describe('computeMetrics', () => {
       result(refusal()),
     ]);
     expect(m.groundedRate).toBe(25);
+  });
+
+  it('does not count an answer as grounded when it breaks document precedence (G8)', () => {
+    const m = computeMetrics([result(answer(['a'])), result(answer(['a']), { grades: grades({ G8: ['fail'] }) })]);
+    expect(m.groundedRate).toBe(50);
   });
 
   it('leaves must-refuse cases out of the grounded rate', () => {
