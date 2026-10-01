@@ -1,0 +1,3 @@
+# LF everywhere: corpus text is quoted verbatim and hashed into replay fixtures,
+# so CRLF on Windows vs LF in CI would break both.
+* text=auto eol=lf
