@@ -52,10 +52,11 @@ Baseline run [`2026-10-01T06-00`](results/2026-10-01T06-00.md), next to the firs
 | Average steps | 3.2 | 3.17 |
 | Total tokens | 87,068 | 86,810 |
 | p95 latency per case | 17.8 s | 15.0 s |
-| Judge J1 / J2 | not run yet | not run yet |
-| Judge agreement with human labels | not run yet | not run yet |
+| Judge J1 faithfulness (1–4) | not run | 3.90 (96.7 / 100) |
+| Judge J2 correctness (1–4) | not run | 3.50 (83.3 / 100) |
+| Judge agreement with human labels | — | pending the 20 blind labels |
 
-The judge rows are empty until the judge runs (it needs an OpenRouter key) and the 20 blind labels are written. The 100% grounded rate is not 100% correct: see c023 below.
+Until the judge's agreement with the human labels is measured, its scores are reported but not yet trusted. The 100% grounded rate is not 100% correct: see c023 below.
 
 ## What the evals found
 
@@ -103,7 +104,7 @@ Every design choice and its reason is in [docs/decisions.md](docs/decisions.md);
 
 Built with Claude Opus 5.5 writing the code test-first. The two checks that make the numbers mean anything are done by a person: every expected answer is checked against its source ([`cases/gold-review.md`](cases/gold-review.md)), and the 20 judge-check labels are written blind ([`cases/labeling-sheet.md`](cases/labeling-sheet.md)).
 
-**Status, 2026-10-01:** both human checks and the first judge run are still to do.
+**Status, 2026-10-01:** the judge has run on the baseline; the expected-answer review and the 20 blind labels are still to do.
 
 ## Licence
 
