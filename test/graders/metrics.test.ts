@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { AgentRun, TraceStep } from '../../src/agent/loop.ts';
 import type { Grade, GraderId, Verdict } from '../../src/graders/graders.ts';
-import { computeMetrics, p95, type CaseResult } from '../../src/graders/metrics.ts';
+import { computeMetrics, p95, wilson, type CaseResult } from '../../src/graders/metrics.ts';
 
 const step = (latencyMs: number, tokensIn = 100, tokensOut = 10): TraceStep => ({
   step: 1,
@@ -33,6 +33,18 @@ const result = (run: AgentRun, extra: Partial<CaseResult> = {}): CaseResult => (
   run,
   grades: grades(),
   ...extra,
+});
+
+describe('wilson', () => {
+  it('gives the 95% Wilson interval in percent', () => {
+    expect(wilson(0, 10)).toEqual([0, 27.75]);
+    expect(wilson(10, 10)).toEqual([72.25, 100]);
+    expect(wilson(21, 22)).toEqual([78.2, 99.19]);
+  });
+
+  it('is null with no data', () => {
+    expect(wilson(0, 0)).toBeNull();
+  });
 });
 
 describe('p95', () => {
@@ -93,6 +105,14 @@ describe('computeMetrics', () => {
       result(answer(['a'], [step(1000, 70, 7)])),
     ]);
     expect(m).toMatchObject({ avgSteps: 1.5, totalTokens: 198, p95LatencyMs: 1000 });
+  });
+
+  it('reports a 95% interval for each rate and how many points one case is worth', () => {
+    const m = computeMetrics([result(answer(['a'])), result(answer(['a']), { grades: grades({ G2: ['fail', 1] }) })]);
+    expect(m.intervals.groundedRate).toEqual(wilson(1, 2));
+    expect(m.intervals.refusalAccuracy).toEqual(wilson(2, 2));
+    expect(m.intervals.citationPrecision).toEqual(wilson(2, 2));
+    expect(m.pointsPerCase).toEqual({ groundedRate: 50, refusalAccuracy: 50 });
   });
 
   it('counts each grader\'s passes and fails', () => {

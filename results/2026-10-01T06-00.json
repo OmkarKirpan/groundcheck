@@ -1,6 +1,6 @@
 {
  "runId": "2026-10-01T06-00",
- "createdAt": "2026-10-01T06:50:33.984Z",
+ "createdAt": "2026-10-01T07:12:01.777Z",
  "agent": {
   "model": "gemma4:e2b",
   "promptVersion": "agent-v1"
@@ -15,6 +15,24 @@
   "avgSteps": 3.17,
   "totalTokens": 86810,
   "p95LatencyMs": 14954,
+  "intervals": {
+   "groundedRate": [
+    78.2,
+    99.19
+   ],
+   "refusalAccuracy": [
+    83.33,
+    99.41
+   ],
+   "citationPrecision": [
+    77.35,
+    98.02
+   ]
+  },
+  "pointsPerCase": {
+   "groundedRate": 4.55,
+   "refusalAccuracy": 3.33
+  },
   "graders": {
    "G1": {
     "pass": 23,

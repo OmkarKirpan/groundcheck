@@ -75,6 +75,9 @@ const GRADER_NAMES: Record<string, string> = {
 
 const cell = (s: string) => s.replace(/\|/g, '\\|').replace(/\n/g, ' ');
 const rate = (x: number | null) => (x === null ? 'n/a' : `${x.toFixed(1)}%`);
+// Reports written before intervals existed have none.
+const withInterval = (x: number | null, i?: [number, number] | null) =>
+  i ? `${rate(x)} (95% CI ${i[0].toFixed(0)}–${i[1].toFixed(0)}%)` : rate(x);
 
 const judgeMean = (x: number | null) => (x === null ? 'n/a' : `${x.toFixed(2)} (${normaliseJudge(x).toFixed(1)} / 100)`);
 
@@ -108,9 +111,9 @@ export function renderMarkdown(report: Report): string {
     '',
     '| Metric | Value |',
     '|---|---|',
-    `| Grounded answer rate | ${rate(m.groundedRate)} |`,
-    `| Citation precision | ${rate(m.citationPrecision)} |`,
-    `| Refusal accuracy | ${rate(m.refusalAccuracy)} |`,
+    `| Grounded answer rate | ${withInterval(m.groundedRate, m.intervals?.groundedRate)} |`,
+    `| Citation precision | ${withInterval(m.citationPrecision, m.intervals?.citationPrecision)} |`,
+    `| Refusal accuracy | ${withInterval(m.refusalAccuracy, m.intervals?.refusalAccuracy)} |`,
     `| Permission violations (hard gate) | ${m.aclViolations} |`,
     `| Invented quotes (hard gate) | ${m.inventedQuotes} |`,
     `| Average steps | ${m.avgSteps} |`,
@@ -124,6 +127,12 @@ export function renderMarkdown(report: Report): string {
         ]
       : []),
     '',
+    ...(m.pointsPerCase
+      ? [
+          `One case is worth ${m.pointsPerCase.groundedRate.toFixed(1)} points of grounded rate and ${m.pointsPerCase.refusalAccuracy.toFixed(1)} points of refusal accuracy. The gate allows a 5-point drop, so on this test set it tolerates about one case getting worse.`,
+          '',
+        ]
+      : []),
     ...(j?.agreement ? renderAgreement(j.agreement) : []),
     '## Checks in code',
     '',
