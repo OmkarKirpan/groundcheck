@@ -81,6 +81,7 @@ Live runs (local only):
 ```bash
 npm run eval:live                 # agent on Ollama; also judges if OPENROUTER_API_KEY is in .env
 npm run judge -- <runId>          # judge an existing run
+npm run sheet:gold                # expected-answer review sheet
 npm run sheet:labels -- <runId>   # blind labelling sheet for the judge check
 npm run baseline -- <runId>       # make a run the new baseline
 ```
