@@ -1,0 +1,169 @@
+{
+ "kind": "agent",
+ "key": "e6c7cc39c6557624",
+ "request": {
+  "model": "gemma4:e2b",
+  "messages": [
+   {
+    "role": "system",
+    "content": "You are the document assistant for Halvicor Systems. You answer questions using only the company documents you can reach with your tools. The user's access level decides which documents you can see.\n\nHow to work:\n1. Call search_docs first. Use open_doc to read a whole document when a snippet is not enough or when you need to check its status.\n2. Prefer documents with status \"current\". Never rely on a document with status \"superseded\" when a current version exists.\n3. Finish by calling final_answer. You have at most 5 tool calls in total, including final_answer.\n\nRules for final_answer:\n- Use only facts stated in the documents. Do not use outside knowledge.\n- Give at least one citation. Each quote must be copied exactly, word for word, from the cited document.\n- Before you answer, check that your quotes answer the exact question that was asked, not a similar one. If they only answer a related question, refuse.\n- If the documents do not answer the question, or a document you need is not available to you, call final_answer with refusal set to true and a short reason. Do not guess."
+   },
+   {
+    "role": "user",
+    "content": "How many days of paid annual leave does a full-time employee get?"
+   },
+   {
+    "role": "assistant",
+    "content": "",
+    "tool_calls": [
+     {
+      "id": "call_02saf5qw",
+      "function": {
+       "index": 0,
+       "name": "search_docs",
+       "arguments": {
+        "query": "paid annual leave full-time employee"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "role": "tool",
+    "tool_name": "search_docs",
+    "content": "[{\"docId\":\"pol-leave-v1\",\"title\":\"Leave Policy\",\"snippet\":\"## Annual leave\\n\\nFull-time employees receive 20 days of paid annual leave per calendar year. Part-time employees receive leave in proportion to their contracted hours.\",\"score\":15.943},{\"docId\":\"pol-leave-v2\",\"title\":\"Leave Policy\",\"snippet\":\"## Annual leave\\n\\nFull-time employees receive 24 days of paid annual leave per calendar year. Part-time employees receive leave in proportion to their contracted hours.\",\"score\":15.943},{\"docId\":\"pol-leave-v1\",\"title\":\"Leave Policy\",\"snippet\":\"# Leave Policy (version 1)\\n\\nThis policy covers paid annual leave for all full-time Halvicor Systems employees.\",\"score\":15.123},{\"docId\":\"pol-leave-v2\",\"title\":\"Leave Policy\",\"snippet\":\"# Leave Policy (version 2)\\n\\nThis policy replaces version 1 from 1 April 2026. It covers paid annual leave for all full-time Halvicor Systems employees.\",\"score\":13.419},{\"docId\":\"pol-parental-leave\",\"title\":\"Parental Leave Policy\",\"snippet\":\"## Paid leave\\n\\nThe primary caregiver receives 16 weeks of parental leave at full pay. The secondary caregiver receives 6 weeks of parental leave at full pay.\",\"score\":8.752}]"
+   },
+   {
+    "role": "assistant",
+    "content": "",
+    "tool_calls": [
+     {
+      "id": "call_iddaapw2",
+      "function": {
+       "index": 0,
+       "name": "open_doc",
+       "arguments": {
+        "docId": "pol-leave-v1"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "role": "tool",
+    "tool_name": "open_doc",
+    "content": "{\"docId\":\"pol-leave-v1\",\"title\":\"Leave Policy\",\"version\":1,\"status\":\"superseded\",\"body\":\"# Leave Policy (version 1)\\n\\nThis policy covers paid annual leave for all full-time Halvicor Systems employees.\\n\\n## Annual leave\\n\\nFull-time employees receive 20 days of paid annual leave per calendar year. Part-time employees receive leave in proportion to their contracted hours.\\n\\n## Carryover\\n\\nUp to 5 unused days may be carried over into the next calendar year. Carried-over days expire on 31 March.\\n\\n## Requesting leave\\n\\nLeave requests must be submitted in the HR portal at least 5 working days in advance and approved by your manager.\"}"
+   }
+  ],
+  "tools": [
+   {
+    "type": "function",
+    "function": {
+     "name": "search_docs",
+     "description": "Keyword search over the company documents you are allowed to see. Returns up to 5 matching paragraphs.",
+     "parameters": {
+      "type": "object",
+      "properties": {
+       "query": {
+        "type": "string",
+        "description": "Keywords to search for."
+       }
+      },
+      "required": [
+       "query"
+      ]
+     }
+    }
+   },
+   {
+    "type": "function",
+    "function": {
+     "name": "open_doc",
+     "description": "Read a whole document, including its version and status (current or superseded).",
+     "parameters": {
+      "type": "object",
+      "properties": {
+       "docId": {
+        "type": "string",
+        "description": "The docId from a search result."
+       }
+      },
+      "required": [
+       "docId"
+      ]
+     }
+    }
+   },
+   {
+    "type": "function",
+    "function": {
+     "name": "final_answer",
+     "description": "Finish with an answer and its citations, or with a refusal.",
+     "parameters": {
+      "type": "object",
+      "properties": {
+       "answer": {
+        "type": "string",
+        "description": "The answer, using only facts from the documents."
+       },
+       "citations": {
+        "type": "array",
+        "description": "At least one source. Each quote must be copied exactly, word for word, from the document.",
+        "items": {
+         "type": "object",
+         "properties": {
+          "docId": {
+           "type": "string"
+          },
+          "quote": {
+           "type": "string"
+          }
+         },
+         "required": [
+          "docId",
+          "quote"
+         ]
+        }
+       },
+       "refusal": {
+        "type": "boolean",
+        "description": "Set to true when the documents do not answer the question."
+       },
+       "reason": {
+        "type": "string",
+        "description": "Why you are refusing."
+       }
+      }
+     }
+    }
+   }
+  ],
+  "options": {
+   "temperature": 0,
+   "num_ctx": 8192,
+   "seed": 0
+  },
+  "think": false
+ },
+ "response": {
+  "message": {
+   "role": "assistant",
+   "content": "",
+   "tool_calls": [
+    {
+     "id": "call_hc7vvkt7",
+     "function": {
+      "index": 0,
+      "name": "open_doc",
+      "arguments": {
+       "docId": "pol-leave-v2"
+      }
+     }
+    }
+   ]
+  },
+  "tokensIn": 1140,
+  "tokensOut": 21,
+  "latencyMs": 1428
+ }
+}
