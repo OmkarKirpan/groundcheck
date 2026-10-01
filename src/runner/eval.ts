@@ -52,9 +52,13 @@ async function addJudge(report: Report, call: JudgeCall) {
   });
 }
 
+/** Every other recorded run: an unchanged answer is judged once, not once per run. */
+const otherRuns = (fixtures: string) =>
+  existsSync('fixtures') ? readdirSync('fixtures').map((d) => `fixtures/${d}`).filter((d) => d !== fixtures) : [];
+
 function liveJudge(fixtures: string): JudgeCall | null {
   const key = process.env.OPENROUTER_API_KEY;
-  return key ? cached(openRouterCall(key), fixtures, 'judge') : null;
+  return key ? cached(openRouterCall(key), fixtures, 'judge', otherRuns(fixtures)) : null;
 }
 
 async function runAgentEval(runId: string, client: ModelClient): Promise<Report> {

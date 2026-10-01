@@ -48,13 +48,21 @@ function loadFixtures<Res>(dir: string, kind: string): Map<string, Res> {
   return fixtures;
 }
 
-/** Recorded response if there is one, otherwise a live call that gets recorded. Saves rate-limited judge calls. */
-export function cached<Req, Res>(call: (req: Req) => Promise<Res>, dir: string, kind: string) {
-  const fixtures = loadFixtures<Res>(dir, kind);
+/**
+ * Recorded response if there is one, otherwise a live call that gets recorded. Saves rate-limited judge calls.
+ * A hit in one of `alsoLookIn` (earlier runs) is copied into `dir`, so this run still replays on its own.
+ */
+export function cached<Req, Res>(call: (req: Req) => Promise<Res>, dir: string, kind: string, alsoLookIn: string[] = []) {
+  const own = loadFixtures<Res>(dir, kind);
+  const others = new Map(alsoLookIn.flatMap((d) => [...loadFixtures<Res>(d, kind)]));
   const live = recording(call, dir, kind);
   return async (request: Req): Promise<Res> => {
-    const hit = fixtures.get(requestKey(request));
-    return hit === undefined ? live(request) : structuredClone(hit);
+    const key = requestKey(request);
+    const hit = own.get(key);
+    if (hit !== undefined) return structuredClone(hit);
+    const elsewhere = others.get(key);
+    if (elsewhere !== undefined) return recording(async () => structuredClone(elsewhere), dir, kind)(request);
+    return live(request);
   };
 }
 

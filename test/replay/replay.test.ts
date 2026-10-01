@@ -54,6 +54,19 @@ describe('recording and replaying', () => {
     expect(await replaying(dir, 'judge')({ q: 'new' })).toEqual({ a: 'new', n: 2 });
   });
 
+  it('cached: reuses a response recorded by another run and copies it into this run', async () => {
+    const [older, newer] = [tmp(), tmp()];
+    let calls = 0;
+    const live = async (req: { q: string }) => ({ a: req.q, n: ++calls });
+    await recording(live, older, 'judge')({ q: 'same answer' });
+
+    const judge = cached(live, newer, 'judge', [older]);
+    expect(await judge({ q: 'same answer' })).toEqual({ a: 'same answer', n: 1 });
+    expect(calls).toBe(1);
+    // Copied, so the new run replays on its own.
+    expect(await replaying(newer, 'judge')({ q: 'same answer' })).toEqual({ a: 'same answer', n: 1 });
+  });
+
   it('keeps kinds apart, so a judge fixture never answers an agent request', async () => {
     const dir = tmp();
     await recording(async () => ({ a: 1 }), dir, 'judge')({ q: 'one' });
