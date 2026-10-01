@@ -4,7 +4,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { parseArgs } from 'node:util';
 import type { Report } from '../runner/run.ts';
-import { gate, type GateMetrics } from './gate.ts';
+import { caseVerdicts, gate, newFailures, type CaseVerdicts, type GateMetrics } from './gate.ts';
 
 const BASELINE = 'results/baseline.json';
 
@@ -31,19 +31,26 @@ const [first, second] = positionals;
 if (first === 'set') {
   if (!second) throw new Error('usage: npm run baseline -- <runId>');
   const report = readJson<Report>(`results/${second}.json`);
-  writeFileSync(BASELINE, `${JSON.stringify({ runId: report.runId, metrics: gateMetrics(report) }, null, 2)}\n`);
+  const baseline = { runId: report.runId, metrics: gateMetrics(report), cases: caseVerdicts(report.cases) };
+  writeFileSync(BASELINE, `${JSON.stringify(baseline, null, 2)}\n`);
   console.log(`baseline is now ${report.runId}`);
 } else {
   const path = first ?? 'results/replay.json';
   // CI passes the base branch's baseline, so a change can't approve itself by editing baseline.json.
-  const baseline = readJson<{ runId: string; metrics: GateMetrics }>(values.baseline ?? BASELINE);
-  const result = gate(gateMetrics(readJson<Report>(path)), baseline.metrics);
+  const baseline = readJson<{ runId: string; metrics: GateMetrics; cases?: CaseVerdicts }>(values.baseline ?? BASELINE);
+  const report = readJson<Report>(path);
+  const result = gate(gateMetrics(report), baseline.metrics);
+  const regressions = baseline.cases ? newFailures(baseline.cases, report.cases) : [];
 
   console.log(`gate: ${path} vs baseline ${baseline.runId}\n`);
   for (const c of result.checks) {
     const mark = c.skipped ? 'skip' : c.ok ? 'ok  ' : 'FAIL';
     console.log(`${mark}  ${c.name.padEnd(18)} ${String(c.baseline).padStart(9)} → ${String(c.current).padEnd(9)} ${c.rule}`);
   }
-  console.log(result.ok ? '\ngate passed' : '\ngate FAILED');
-  process.exit(result.ok ? 0 : 1);
+  const perCase = regressions.length ? 'FAIL' : baseline.cases ? 'ok  ' : 'skip';
+  console.log(`${perCase}  ${'perCase'.padEnd(18)} ${''.padStart(21)} no check may go from pass to fail on any case`);
+  for (const r of regressions) console.log(`        ${r}`);
+  const ok = result.ok && regressions.length === 0;
+  console.log(ok ? '\ngate passed' : '\ngate FAILED');
+  process.exit(ok ? 0 : 1);
 }

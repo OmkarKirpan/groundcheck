@@ -10,5 +10,307 @@
     "p95LatencyMs": 14954,
     "j1Mean": 3.93,
     "j2Mean": 3.53
+  },
+  "cases": {
+    "c001": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    },
+    "c002": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    },
+    "c003": {
+      "G1": "n/a",
+      "G2": "n/a",
+      "G3": "n/a",
+      "G4": "n/a",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "n/a"
+    },
+    "c004": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    },
+    "c005": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    },
+    "c006": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    },
+    "c007": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    },
+    "c008": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    },
+    "c009": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    },
+    "c010": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    },
+    "c011": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    },
+    "c012": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    },
+    "c013": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    },
+    "c014": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    },
+    "c015": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    },
+    "c016": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    },
+    "c017": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    },
+    "c018": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    },
+    "c019": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    },
+    "c020": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    },
+    "c021": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    },
+    "c022": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    },
+    "c023": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "fail"
+    },
+    "c024": {
+      "G1": "n/a",
+      "G2": "n/a",
+      "G3": "n/a",
+      "G4": "n/a",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "n/a"
+    },
+    "c025": {
+      "G1": "n/a",
+      "G2": "n/a",
+      "G3": "n/a",
+      "G4": "n/a",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "n/a"
+    },
+    "c026": {
+      "G1": "n/a",
+      "G2": "n/a",
+      "G3": "n/a",
+      "G4": "n/a",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "n/a"
+    },
+    "c027": {
+      "G1": "n/a",
+      "G2": "n/a",
+      "G3": "n/a",
+      "G4": "n/a",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "n/a"
+    },
+    "c028": {
+      "G1": "n/a",
+      "G2": "n/a",
+      "G3": "n/a",
+      "G4": "n/a",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "n/a"
+    },
+    "c029": {
+      "G1": "n/a",
+      "G2": "n/a",
+      "G3": "n/a",
+      "G4": "n/a",
+      "G5": "pass",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "n/a"
+    },
+    "c030": {
+      "G1": "pass",
+      "G2": "pass",
+      "G3": "pass",
+      "G4": "pass",
+      "G5": "fail",
+      "G6": "pass",
+      "G7": "pass",
+      "G8": "pass"
+    }
   }
 }

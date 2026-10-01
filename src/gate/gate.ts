@@ -1,3 +1,4 @@
+import type { Grade } from '../graders/graders.ts';
 import type { Metrics } from '../graders/metrics.ts';
 
 export const MAX_QUALITY_DROP_POINTS = 5;
@@ -19,6 +20,30 @@ export interface GateCheck {
   current: number | null;
   ok: boolean;
   skipped?: boolean;
+}
+
+/** Each case's check verdicts, as stored in baseline.json: { caseId: { G1: 'pass', ... } }. */
+export type CaseVerdicts = Record<string, Partial<Record<Grade['id'], Grade['verdict']>>>;
+
+export const caseVerdicts = (cases: { caseId: string; grades: Grade[] }[]): CaseVerdicts =>
+  Object.fromEntries(cases.map((c) => [c.caseId, Object.fromEntries(c.grades.map((g) => [g.id, g.verdict]))]));
+
+/**
+ * Checks that newly fail on a case: pass or n/a in the baseline, fail now. One case is under the 5-point
+ * allowance, so the averages can't see this; a repeat run of identical code flipped no verdicts (D52),
+ * so a flip is a real change, not noise.
+ */
+export function newFailures(baseline: CaseVerdicts, current: { caseId: string; grades: Grade[] }[]): string[] {
+  const found: string[] = [];
+  for (const c of current) {
+    const before = baseline[c.caseId];
+    if (!before) continue;
+    for (const g of c.grades) {
+      const was = before[g.id];
+      if (g.verdict === 'fail' && was && was !== 'fail') found.push(`${c.caseId}: ${g.id} ${was} → fail`);
+    }
+  }
+  return found;
 }
 
 /** 1–4 judge scale onto 0–100, so judge scores use the same 5-point rule as the rates. */

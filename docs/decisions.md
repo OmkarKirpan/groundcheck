@@ -56,6 +56,7 @@ Settled on 2026-09-30 in a `/batch-grill-me` session: 3 rounds, and every recomm
 | D50 | **Judge probes: answers with a planted mistake and untouched controls** (`cases/judge-probes.jsonl`), every quote real | The human labels contained no unfaithful answer, so J1 had never been tested on one. Known-answer probes test the tester |
 | D51 | **A judge failure during `eval:live` no longer loses the run**: the agent report is written, judged answers stay cached, and `npm run judge -- <runId>` finishes later | Run 2026-10-01T07-07 hit the daily cap at its judge step and crashed before writing its report |
 | D52 | **Same code, temperature 0, fixed seed is not deterministic on this GPU**: a repeat run (2026-10-01T07-07) reworded 7 of 30 answers, flipped 0 check verdicts and changed no rate; p95 latency moved 11.6% | Read runs by verdicts and rates, not text. The 15% latency budget is close to plain noise on a laptop |
+| D53 | **The gate also fails when any check goes from pass to fail on any case**; `baseline.json` now stores each case's verdicts | agent-v2 regressed c016 (G4) and dropped the grounded rate by exactly one case, inside the 5-point allowance, so the averages let it through. A repeat run of identical code flipped no verdicts (D52), so a flip is signal, not noise |
 
 ## Facts checked on 2026-09-30 (check again at build time)
 - Ollama 0.18.2 is installed; the server wasn't running and no models were pulled. `gemma4:e2b` is in the Ollama library.

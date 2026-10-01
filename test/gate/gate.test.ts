@@ -1,5 +1,34 @@
 import { describe, expect, it } from 'vitest';
-import { gate, normaliseJudge, type GateMetrics } from '../../src/gate/gate.ts';
+import { caseVerdicts, gate, newFailures, normaliseJudge, type GateMetrics } from '../../src/gate/gate.ts';
+import type { Grade } from '../../src/graders/graders.ts';
+
+describe('newFailures (per-case regressions)', () => {
+  const g = (id: Grade['id'], verdict: Grade['verdict']): Grade => ({ id, verdict });
+  const baseline = caseVerdicts([
+    { caseId: 'c1', grades: [g('G4', 'pass'), g('G5', 'pass')] },
+    { caseId: 'c2', grades: [g('G1', 'n/a'), g('G5', 'fail')] },
+  ]);
+
+  it('finds nothing when no verdict got worse', () => {
+    const current = [
+      { caseId: 'c1', grades: [g('G4', 'pass'), g('G5', 'pass')] },
+      { caseId: 'c2', grades: [g('G1', 'n/a'), g('G5', 'pass')] },
+    ];
+    expect(newFailures(baseline, current)).toEqual([]);
+  });
+
+  it('reports a check that went from pass or n/a to fail', () => {
+    const current = [
+      { caseId: 'c1', grades: [g('G4', 'fail'), g('G5', 'pass')] },
+      { caseId: 'c2', grades: [g('G1', 'fail'), g('G5', 'fail')] },
+    ];
+    expect(newFailures(baseline, current)).toEqual(['c1: G4 pass → fail', 'c2: G1 n/a → fail']);
+  });
+
+  it('ignores a case the baseline does not have', () => {
+    expect(newFailures(baseline, [{ caseId: 'c9', grades: [g('G2', 'fail')] }])).toEqual([]);
+  });
+});
 
 const base: GateMetrics = {
   groundedRate: 80,
