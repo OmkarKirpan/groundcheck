@@ -35,6 +35,13 @@ describe('the real cases', () => {
   const cases = loadCases();
   const docs = new Map(loadCorpus().map((d) => [d.id, d]));
 
+  it('match the spec mix: 30 cases, 12/6/4/4/4, across all 3 roles', () => {
+    const count = (cat: string) => cases.filter((c) => c.category === cat).length;
+    expect(cases).toHaveLength(30);
+    expect([count('single-doc'), count('multi-doc'), count('stale/conflict'), count('permission'), count('unanswerable')]).toEqual([12, 6, 4, 4, 4]);
+    expect(new Set(cases.map((c) => c.role))).toEqual(new Set(['employee', 'manager', 'hr_admin']));
+  });
+
   it('have unique ids', () => {
     expect(new Set(cases.map((c) => c.id)).size).toBe(cases.length);
   });

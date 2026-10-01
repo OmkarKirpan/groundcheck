@@ -65,6 +65,14 @@ describe('the real corpus', () => {
     }
   });
 
+  it('has the traps the spec asks for', () => {
+    expect(docs.length).toBeGreaterThanOrEqual(28);
+    expect(docs.filter((d) => d.status === 'superseded').length).toBeGreaterThanOrEqual(2);
+    expect(docs.filter((d) => !d.rolesAllowed.includes('employee')).length).toBeGreaterThanOrEqual(4);
+    // The contradicting pair and the written rule for which one wins.
+    expect(ids.has('pol-travel') && ids.has('faq-travel') && ids.has('pol-document-precedence')).toBe(true);
+  });
+
   it('gives every superseded doc a successor', () => {
     for (const d of docs.filter((d) => d.status === 'superseded')) {
       expect(docs.some((n) => n.supersedes === d.id), `${d.id} has no successor`).toBe(true);
