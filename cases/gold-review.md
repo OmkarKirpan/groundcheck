@@ -20,7 +20,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > The incident commander posts the first customer status update within 15 minutes of declaring a SEV1. Updates continue every 30 minutes until the incident is resolved.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c002 · stale/conflict · employee
 
@@ -39,7 +39,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > Full-time employees receive 24 days of paid annual leave per calendar year. Part-time employees receive leave in proportion to their contracted hours.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c003 · permission · employee
 
@@ -55,7 +55,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 - `rb-oncall-v1`: ## Allowance Engineers receive an on-call allowance of EUR 150 per week.
 - `rb-oncall-v2`: ## Allowance Engineers receive an on-call allowance of EUR 200 per week.
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c004 · single-doc · employee
 
@@ -76,7 +76,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > Working from another country is allowed for up to 20 working days per calendar year with approval from HR.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c005 · single-doc · employee
 
@@ -97,7 +97,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > New employees receive a one-time home office stipend of EUR 600 for a desk, chair or monitor.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c006 · single-doc · manager
 
@@ -118,7 +118,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > Every production deploy needs approval from two engineers. Emergency fixes for a SEV1 may be deployed during the freeze with approval from the incident commander.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c007 · single-doc · employee
 
@@ -139,7 +139,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > Production access expires after 30 days. Request it again if you still need it.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c008 · single-doc · employee
 
@@ -160,7 +160,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > Failed webhook deliveries are retried 5 times over 24 hours.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c009 · single-doc · employee
 
@@ -181,7 +181,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > Use the Halvicor Connect VPN client. It is installed on every company laptop.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c010 · single-doc · manager
 
@@ -202,7 +202,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > The learning budget can be spent on courses, certifications, books and conference tickets. Travel to a conference is paid from the travel budget, not the learning budget.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c011 · single-doc · employee
 
@@ -221,7 +221,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > Tell HR at least 8 weeks before the expected date of birth or adoption.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c012 · single-doc · hr_admin
 
@@ -240,7 +240,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > Annual salary adjustments are capped at 8 percent of base salary unless the employee changes level. Offers above the top of a band need approval from the Chief People Officer.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c013 · single-doc · manager
 
@@ -259,7 +259,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > Managers share final ratings with each employee in a one-to-one meeting in January.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c014 · single-doc · employee
 
@@ -276,7 +276,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > Multi-factor authentication is required on every company account. Passwords must be at least 14 characters long.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c015 · multi-doc · employee
 
@@ -305,7 +305,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > The incident commander posts the first customer status update within 15 minutes of declaring a SEV1. Updates continue every 30 minutes until the incident is resolved.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c016 · multi-doc · employee
 
@@ -336,7 +336,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > If monthly uptime is below 99.9 percent, the customer receives a credit of 10 percent of the monthly fee. Below 99.0 percent, the credit is 25 percent.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c017 · multi-doc · employee
 
@@ -367,7 +367,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > Spending from the learning budget needs approval from your manager before you book.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c018 · multi-doc · manager
 
@@ -398,13 +398,13 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > Every production deploy needs approval from two engineers. Emergency fixes for a SEV1 may be deployed during the freeze with approval from the incident commander.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c019 · multi-doc · employee
 
 **Question:** I'm setting up to work from home. What home office stipend do I get, and which VPN client do I use?
 
-**Expected answer:** A one-time home office stipend of EUR 600, and the Halvicor Connect VPN client.
+**Expected answer:** New employees get a one-time home office stipend of EUR 600 for a desk, chair or monitor, and the VPN client is Halvicor Connect.
 
 **`pol-remote-work`** (current, effective 2025-06-01)
 
@@ -431,7 +431,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > Use the Halvicor Connect VPN client. It is installed on every company laptop.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c020 · multi-doc · hr_admin
 
@@ -460,7 +460,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > Ratings use a scale from 1 to 5, where 5 is the highest. No more than 15 percent of a team may be rated 5.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c021 · stale/conflict · employee
 
@@ -479,7 +479,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > When travelling for work, meals are reimbursed up to EUR 55 per day. Alcohol is not reimbursed.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c022 · stale/conflict · manager
 
@@ -498,7 +498,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > Engineers receive an on-call allowance of EUR 200 per week.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c023 · stale/conflict · employee
 
@@ -529,7 +529,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 > If a policy and an FAQ disagree, the policy wins. If two policies disagree, the one with the later effective date wins. A superseded document never applies when its current version exists.
 
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c024 · permission · employee
 
@@ -545,7 +545,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 - `faq-offices`: # Offices FAQ ## Where are the offices? Halvicor Systems has offices in Lisbon and Pune. The head office is in Lisbon.
 - `prod-relay-sla-v2`: ## Exclusions Scheduled maintenance announced at least 72 hours in advance does not count as downtime.
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c025 · permission · employee
 
@@ -560,7 +560,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 - `prod-api-limits`: # Relay API Limits ## Rate limits The Relay API v2 allows 600 requests per minute per account, with bursts of up to 100 requests per second. Requests over the limit get HTTP 429 with a Retry-After header.
 - `prod-api-limits`: ## Webhooks Failed webhook deliveries are retried 5 times over 24 hours.
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c026 · permission · manager
 
@@ -576,7 +576,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 - `mgr-performance-calibration`: # Performance Calibration Guide 2026 For people managers and HR only.
 - `rb-incident-response`: # Incident Response Runbook ## Severity levels SEV1 means Halvicor Relay is down or losing customer data for more than one customer. SEV2 means a major feature is degraded for many customers. SEV3 means a minor issue that has a workaround.
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c027 · unanswerable · employee
 
@@ -590,7 +590,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 - `prod-relay-overview`: ## Limits One Relay account supports up to 50,000 devices.
 - `prod-api-limits`: ## Webhooks Failed webhook deliveries are retried 5 times over 24 hours.
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c028 · unanswerable · employee
 
@@ -604,7 +604,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 - `faq-it`: ## How do I connect to internal systems from home? Use the Halvicor Connect VPN client. It is installed on every company laptop.
 - `pol-document-precedence`: # Document Precedence Halvicor Systems documents sometimes disagree. This page sets out which one applies.
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c029 · unanswerable · hr_admin
 
@@ -618,7 +618,7 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 - `rb-oncall-v1`: ## Allowance Engineers receive an on-call allowance of EUR 150 per week.
 - `rb-oncall-v2`: ## Allowance Engineers receive an on-call allowance of EUR 200 per week.
 
-- [ ] Expected answer checked
+- [x] Expected answer checked
 
 ## c030 · unanswerable · employee
 
@@ -632,4 +632,4 @@ Tick the box when the expected answer is right. If one is wrong, fix `cases/case
 - `pol-leave-v2`: ## Annual leave Full-time employees receive 24 days of paid annual leave per calendar year. Part-time employees receive leave in proportion to their contracted hours.
 - `pol-leave-v1`: # Leave Policy (version 1) This policy covers paid annual leave for all full-time Halvicor Systems employees.
 
-- [ ] Expected answer checked
+- [x] Expected answer checked

@@ -3079,7 +3079,7 @@
    "c019": {
     "faithfulness": 3,
     "correctness": 4,
-    "rationale": "The stipend claim is directly cited; the VPN client claim is supported but adds an implied purpose not in the citation, making it a minor implied detail. All expected facts (EUR 600 stipend and Halvicor Connect VPN) are present and correct with no incorrect additions.",
+    "rationale": "The stipend claim is directly cited; the VPN client name is cited, while the added purpose ('to connect to internal systems from home') is a minor inference not explicitly in the quotes. All expected facts are present and correct.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c020": {
