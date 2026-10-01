@@ -12,11 +12,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          # Full history: the key scan covers every commit, and the gate reads the previous baseline.
+          fetch-depth: 0
 
-      - name: No API keys in tracked files
+      - name: No API keys in any tracked file or past commit
         run: |
-          if git grep -nIE 'sk-or-[A-Za-z0-9_-]{20,}'; then
-            echo "::error::Tracked file contains something that looks like an OpenRouter key"
+          if git grep -nIE 'sk-or-[A-Za-z0-9_-]{20,}' || git log -p --all | grep -qE 'sk-or-[A-Za-z0-9_-]{20,}'; then
+            echo "::error::Something that looks like an OpenRouter key is in the repo or its history"
             exit 1
           fi
 
@@ -29,8 +32,25 @@ jobs:
       - run: npm run typecheck
       - run: npm test
 
-      - name: Replay the recorded run (no model calls)
+      # Replays the newest recorded run with no model calls. Fails if a prompt, tool or retrieval
+      # change wasn't re-recorded, or if the committed results don't match what this code produces.
+      - name: Replay the newest recorded run
         run: npm run eval:replay
 
-      - name: Gate against the baseline
-        run: npm run gate
+      # Gate against the baseline *before* this change (base branch for a PR, previous commit for a
+      # push), so a change that also edits results/baseline.json can't approve itself.
+      - name: Baseline to compare against
+        env:
+          BEFORE: ${{ github.event.before }}
+        run: |
+          ref="${GITHUB_BASE_REF:+origin/$GITHUB_BASE_REF}"
+          ref="${ref:-$BEFORE}"
+          if [ -n "$ref" ] && git show "$ref:results/baseline.json" > "$RUNNER_TEMP/baseline.json" 2>/dev/null; then
+            echo "baseline from $ref"
+          else
+            cp results/baseline.json "$RUNNER_TEMP/baseline.json"
+            echo "no earlier baseline; using this commit's"
+          fi
+
+      - name: Gate
+        run: npm run gate -- --baseline "$RUNNER_TEMP/baseline.json"

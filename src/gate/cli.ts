@@ -1,6 +1,8 @@
-// npm run gate [report.json]          compare a report (default results/replay.json) with results/baseline.json
-// npm run baseline -- <runId>         make results/<runId>.json the baseline
+// npm run gate [report.json] [--baseline path]   compare a report (default results/replay.json)
+//                                                with a baseline (default results/baseline.json)
+// npm run baseline -- <runId>                     make results/<runId>.json the baseline
 import { readFileSync, writeFileSync } from 'node:fs';
+import { parseArgs } from 'node:util';
 import type { Report } from '../runner/run.ts';
 import { gate, type GateMetrics } from './gate.ts';
 
@@ -23,7 +25,8 @@ export function gateMetrics(report: Report): GateMetrics {
   };
 }
 
-const [first, second] = process.argv.slice(2);
+const { values, positionals } = parseArgs({ options: { baseline: { type: 'string' } }, allowPositionals: true });
+const [first, second] = positionals;
 
 if (first === 'set') {
   if (!second) throw new Error('usage: npm run baseline -- <runId>');
@@ -32,7 +35,8 @@ if (first === 'set') {
   console.log(`baseline is now ${report.runId}`);
 } else {
   const path = first ?? 'results/replay.json';
-  const baseline = readJson<{ runId: string; metrics: GateMetrics }>(BASELINE);
+  // CI passes the base branch's baseline, so a change can't approve itself by editing baseline.json.
+  const baseline = readJson<{ runId: string; metrics: GateMetrics }>(values.baseline ?? BASELINE);
   const result = gate(gateMetrics(readJson<Report>(path)), baseline.metrics);
 
   console.log(`gate: ${path} vs baseline ${baseline.runId}\n`);
