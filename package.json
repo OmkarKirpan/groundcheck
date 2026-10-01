@@ -12,7 +12,11 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "agent": "node --disable-warning=ExperimentalWarning src/runner/cli.ts"
+    "eval:live": "node --disable-warning=ExperimentalWarning src/runner/eval.ts live",
+    "eval:replay": "node --disable-warning=ExperimentalWarning src/runner/eval.ts replay",
+    "gate": "node --disable-warning=ExperimentalWarning src/gate/cli.ts",
+    "baseline": "node --disable-warning=ExperimentalWarning src/gate/cli.ts set",
+    "judge": "node --disable-warning=ExperimentalWarning src/runner/eval.ts judge"
   },
   "devDependencies": {
     "@types/node": "^22.20.4",

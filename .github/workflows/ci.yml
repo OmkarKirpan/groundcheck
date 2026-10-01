@@ -28,3 +28,9 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
+
+      - name: Replay the recorded run (no model calls)
+        run: npm run eval:replay
+
+      - name: Gate against the baseline
+        run: npm run gate

@@ -14,3 +14,4 @@ Thumbs.db
 
 # ad-hoc agent runs (official runs go to results/<date>.json + fixtures/)
 results/traces/
+results/replay.*
