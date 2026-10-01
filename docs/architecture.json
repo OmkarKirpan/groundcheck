@@ -101,7 +101,7 @@
     {
       "id": "graders",
       "type": "security",
-      "label": "Checks G1–G7",
+      "label": "Checks G1–G8",
       "sublabel": "code, no model",
       "pos": [
         710,

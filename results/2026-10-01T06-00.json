@@ -1,13 +1,13 @@
 {
  "runId": "2026-10-01T06-00",
- "createdAt": "2026-10-01T06:03:57.172Z",
+ "createdAt": "2026-10-01T06:50:33.984Z",
  "agent": {
   "model": "gemma4:e2b",
   "promptVersion": "agent-v1"
  },
  "metrics": {
   "cases": 30,
-  "groundedRate": 100,
+  "groundedRate": 95.45,
   "citationPrecision": 92.86,
   "refusalAccuracy": 96.67,
   "aclViolations": 0,
@@ -50,6 +50,11 @@
     "pass": 30,
     "fail": 0,
     "na": 0
+   },
+   "G8": {
+    "pass": 22,
+    "fail": 1,
+    "na": 7
    }
   }
  },
@@ -147,6 +152,10 @@
     },
     {
      "id": "G7",
+     "verdict": "pass"
+    },
+    {
+     "id": "G8",
      "verdict": "pass"
     }
    ]
@@ -256,6 +265,10 @@
     {
      "id": "G7",
      "verdict": "pass"
+    },
+    {
+     "id": "G8",
+     "verdict": "pass"
     }
    ]
   },
@@ -337,6 +350,10 @@
     {
      "id": "G7",
      "verdict": "pass"
+    },
+    {
+     "id": "G8",
+     "verdict": "n/a"
     }
    ]
   },
@@ -433,6 +450,10 @@
     },
     {
      "id": "G7",
+     "verdict": "pass"
+    },
+    {
+     "id": "G8",
      "verdict": "pass"
     }
    ]
@@ -531,6 +552,10 @@
     {
      "id": "G7",
      "verdict": "pass"
+    },
+    {
+     "id": "G8",
+     "verdict": "pass"
     }
    ]
   },
@@ -627,6 +652,10 @@
     },
     {
      "id": "G7",
+     "verdict": "pass"
+    },
+    {
+     "id": "G8",
      "verdict": "pass"
     }
    ]
@@ -725,6 +754,10 @@
     {
      "id": "G7",
      "verdict": "pass"
+    },
+    {
+     "id": "G8",
+     "verdict": "pass"
     }
    ]
   },
@@ -821,6 +854,10 @@
     },
     {
      "id": "G7",
+     "verdict": "pass"
+    },
+    {
+     "id": "G8",
      "verdict": "pass"
     }
    ]
@@ -919,6 +956,10 @@
     {
      "id": "G7",
      "verdict": "pass"
+    },
+    {
+     "id": "G8",
+     "verdict": "pass"
     }
    ]
   },
@@ -1015,6 +1056,10 @@
     },
     {
      "id": "G7",
+     "verdict": "pass"
+    },
+    {
+     "id": "G8",
      "verdict": "pass"
     }
    ]
@@ -1113,6 +1158,10 @@
     {
      "id": "G7",
      "verdict": "pass"
+    },
+    {
+     "id": "G8",
+     "verdict": "pass"
     }
    ]
   },
@@ -1209,6 +1258,10 @@
     },
     {
      "id": "G7",
+     "verdict": "pass"
+    },
+    {
+     "id": "G8",
      "verdict": "pass"
     }
    ]
@@ -1307,6 +1360,10 @@
     {
      "id": "G7",
      "verdict": "pass"
+    },
+    {
+     "id": "G8",
+     "verdict": "pass"
     }
    ]
   },
@@ -1403,6 +1460,10 @@
     },
     {
      "id": "G7",
+     "verdict": "pass"
+    },
+    {
+     "id": "G8",
      "verdict": "pass"
     }
    ]
@@ -1501,6 +1562,10 @@
     },
     {
      "id": "G7",
+     "verdict": "pass"
+    },
+    {
+     "id": "G8",
      "verdict": "pass"
     }
    ]
@@ -1630,6 +1695,10 @@
     {
      "id": "G7",
      "verdict": "pass"
+    },
+    {
+     "id": "G8",
+     "verdict": "pass"
     }
    ]
   },
@@ -1746,6 +1815,10 @@
     },
     {
      "id": "G7",
+     "verdict": "pass"
+    },
+    {
+     "id": "G8",
      "verdict": "pass"
     }
    ]
@@ -1871,6 +1944,10 @@
     {
      "id": "G7",
      "verdict": "pass"
+    },
+    {
+     "id": "G8",
+     "verdict": "pass"
     }
    ]
   },
@@ -1976,6 +2053,10 @@
     },
     {
      "id": "G7",
+     "verdict": "pass"
+    },
+    {
+     "id": "G8",
      "verdict": "pass"
     }
    ]
@@ -2094,6 +2175,10 @@
     {
      "id": "G7",
      "verdict": "pass"
+    },
+    {
+     "id": "G8",
+     "verdict": "pass"
     }
    ]
   },
@@ -2191,6 +2276,10 @@
     {
      "id": "G7",
      "verdict": "pass"
+    },
+    {
+     "id": "G8",
+     "verdict": "pass"
     }
    ]
   },
@@ -2287,6 +2376,10 @@
     },
     {
      "id": "G7",
+     "verdict": "pass"
+    },
+    {
+     "id": "G8",
      "verdict": "pass"
     }
    ]
@@ -2386,6 +2479,11 @@
     {
      "id": "G7",
      "verdict": "pass"
+    },
+    {
+     "id": "G8",
+     "verdict": "fail",
+     "detail": "cited faq-travel \"The hotel limit is EUR 180 per night.\" but pol-travel takes precedence (hotel-limit)"
     }
    ]
   },
@@ -2467,6 +2565,10 @@
     {
      "id": "G7",
      "verdict": "pass"
+    },
+    {
+     "id": "G8",
+     "verdict": "n/a"
     }
    ]
   },
@@ -2548,6 +2650,10 @@
     {
      "id": "G7",
      "verdict": "pass"
+    },
+    {
+     "id": "G8",
+     "verdict": "n/a"
     }
    ]
   },
@@ -2629,6 +2735,10 @@
     {
      "id": "G7",
      "verdict": "pass"
+    },
+    {
+     "id": "G8",
+     "verdict": "n/a"
     }
    ]
   },
@@ -2699,6 +2809,10 @@
     {
      "id": "G7",
      "verdict": "pass"
+    },
+    {
+     "id": "G8",
+     "verdict": "n/a"
     }
    ]
   },
@@ -2780,6 +2894,10 @@
     {
      "id": "G7",
      "verdict": "pass"
+    },
+    {
+     "id": "G8",
+     "verdict": "n/a"
     }
    ]
   },
@@ -2861,6 +2979,10 @@
     {
      "id": "G7",
      "verdict": "pass"
+    },
+    {
+     "id": "G8",
+     "verdict": "n/a"
     }
    ]
   },
@@ -2957,6 +3079,10 @@
     },
     {
      "id": "G7",
+     "verdict": "pass"
+    },
+    {
+     "id": "G8",
      "verdict": "pass"
     }
    ]

@@ -25,18 +25,23 @@ The interactive version is [`docs/architecture.html`](docs/architecture.html) (o
 | G5 | correct refusal | it answered a must-refuse question, or refused an answerable one |
 | G6 | step budget | no final answer within 5 steps |
 | G7 | no loop | the same search is repeated |
+| G8 | precedence respected | it cites the losing side of a known conflict (listed in [`cases/conflicts.jsonl`](cases/conflicts.jsonl)) without the winning side, by the corpus's own precedence rule |
 
 **An LLM judge** (`src/judge/`) for what code can't check: J1 faithfulness (is every claim backed by a quote?) and J2 correctness (does it match the expected answer?), 1–4 each, against a written [rubric](docs/judge-rubric.md). It's a different model family from the agent (Nemotron 3 Super on OpenRouter's free tier, Gemma 4 31B as fallback), at temperature 0, with a versioned prompt.
 
 **The judge is checked too:** 20 cases are labelled by a person without seeing the judge's scores. The report shows the agreement and a confusion table. Under 80% agreement, the report says not to trust the judge.
 
-**The gate** (`npm run gate`) compares a run with `results/baseline.json`:
+**The gate** (`npm run gate`) compares a run with the baseline:
 
 - hard gates: **0 permission violations, 0 invented quotes**
 - quality (grounded rate, citation precision, J1, J2) may drop at most 5 points
 - budget (average steps, total tokens, p95 latency) may rise at most 15%
 
-**Record and replay.** `npm run eval:live` runs on a laptop and records every model request and response under `fixtures/<runId>/`, keyed by a hash of the whole request. `npm run eval:replay` serves them back with no model and no secrets, and **fails on any request that wasn't recorded**, so changing a prompt, a tool or the retrieval shows up immediately. CI runs type checks, unit tests, replay and the gate on every push.
+**Record and replay.** `npm run eval:live` runs on a laptop and records every model request and response under `fixtures/<runId>/`, keyed by a hash of the whole request. `npm run eval:replay` serves them back with no model and no secrets, and **fails on any request that wasn't recorded**, so changing a prompt, a tool or the retrieval shows up immediately. It also fails if the committed `results/<runId>.json` isn't exactly what the current code produces from those recordings.
+
+**CI** (on every push and pull request) runs type checks and unit tests, scans every commit for API keys, replays the newest recorded run, and gates it against the baseline from *before* the change: the base branch for a pull request, the previous commit for a push. A change can't approve itself by also editing `results/baseline.json`.
+
+**Changing the agent** (prompt, tools, retrieval, model) therefore goes: make the change → `npm run eval:live` records a new run → `npm run gate -- results/<runId>.json` locally → commit the new `fixtures/<runId>/` and `results/<runId>.*` → CI replays that run and gates it against the old baseline → once merged, `npm run baseline -- <runId>`. Changing a grader or metric instead: `npm run eval:replay -- <runId> --write` regrades the recorded run in place.
 
 ## Results
 
@@ -44,7 +49,7 @@ Baseline run [`2026-10-01T06-00`](results/2026-10-01T06-00.md), next to the firs
 
 | Metric | First run | Baseline |
 |---|---|---|
-| Grounded answer rate (answered, G1–G4 pass) | 90.9% | **100%** |
+| Grounded answer rate (answered; G1–G4 and G8 pass) | 90.9% | **95.5%** |
 | Citation precision | 92.3% | 92.9% |
 | Refusal accuracy (G5) | 90.0% | 96.7% |
 | Permission violations (hard gate) | 0 | 0 |
@@ -56,7 +61,7 @@ Baseline run [`2026-10-01T06-00`](results/2026-10-01T06-00.md), next to the firs
 | Judge J2 correctness (1–4), rubric `judge-v2` | not run | 3.53 (84.4 / 100) |
 | Judge agreement with 20 blind human labels | — | **100%** (`judge-v1`: 97.5%) |
 
-The 100% grounded rate is not 100% correct: the judge fails three answers (c015, c017, c023) that pass all seven checks in code. See findings 3 and 4, and the judge check below.
+The first run's grounded rate is from before G8 existed. Grounded is still not the same as correct: the judge fails two answers (c015, c017) that pass all eight checks in code. See finding 4 and the judge check below.
 
 ## What the evals found
 
@@ -64,9 +69,9 @@ The 100% grounded rate is not 100% correct: the judge fails three answers (c015,
 
 **2. A real quote is not a right answer (c030).** Asked *"How many days of paid sick leave do employees get?"*, which no document answers, the agent replied *"Full-time employees receive 24 days of paid annual leave per calendar year."* It cited the current Leave Policy with a word-for-word quote. Every grounding check passes (G1–G4): the doc exists, the quote is real, the employee may see it, and it's the current version. Only G5 catches it, because the case is marked must-refuse. The 2B model answered the nearest question it could ground, not the one asked.
 
-**3. It took the FAQ's number over the policy's (c023).** Asked for the hotel limit per night, the agent opened the Travel FAQ and answered *EUR 180*, quoting it exactly. The Travel Policy says EUR 220, and the Document Precedence policy says *"If a policy and an FAQ disagree, the policy wins."* **Every check in code passes**, and the case even counts toward the 100% grounded rate: the doc is real, the quote is verbatim, it's allowed, and an FAQ isn't "superseded". Only a correctness check against the expected answer can catch this, and the judge did: J2 = 1, because *"the expected answer says the policy overrides the FAQ to EUR 220"*.
+**3. It took the FAQ's number over the policy's (c023).** Asked for the hotel limit per night, the agent opened the Travel FAQ and answered *EUR 180*, quoting it exactly. The Travel Policy says EUR 220, and the Document Precedence policy says *"If a policy and an FAQ disagree, the policy wins."* At first **every check in code passed**, and the case counted toward a 100% grounded rate: the doc is real, the quote is verbatim, it's allowed, and an FAQ isn't "superseded". The judge caught it (J2 = 1, *"the expected answer says the policy overrides the FAQ to EUR 220"*). Since the corpus states its own precedence rule, this is checkable in code, so it became G8 ([D46](docs/decisions.md)): known conflicts are listed with the exact sentence on each side, and the rule picks the winner. Regrading the same recorded run, G8 fails c023 and nothing else, and the grounded rate drops from 100% to 95.5%, which the gate accepts (under 5 points).
 
-**4. It quoted the right sentence for the wrong conclusion (c017).** Asked whether a conference ticket can come out of the learning budget, the agent quoted *"Travel to a conference is paid from the travel budget, not the learning budget."* and implied the answer was no. The same policy says the budget covers *"courses, certifications, books and conference tickets"*. The quote is real, so all seven checks pass; the judge caught it (J2 = 2).
+**4. It quoted the right sentence for the wrong conclusion (c017).** Asked whether a conference ticket can come out of the learning budget, the agent quoted *"Travel to a conference is paid from the travel budget, not the learning budget."* and implied the answer was no. The same policy says the budget covers *"courses, certifications, books and conference tickets"*. The quote is real, so all eight checks pass; only the judge caught it (J2 = 2).
 
 ### What checking the judge found
 
@@ -83,7 +88,7 @@ Needs Node 22.18+ and, for live runs, [Ollama](https://ollama.com) with `gemma4:
 ```bash
 npm ci
 npm test               # unit tests: BM25, tools, permission filter, graders, gate, replay
-npm run eval:replay    # replay the recorded baseline run, no model needed
+npm run eval:replay    # replay the newest recorded run, no model needed
 npm run gate           # compare it with the baseline
 ```
 

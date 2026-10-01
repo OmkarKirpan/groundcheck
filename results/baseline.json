@@ -1,7 +1,7 @@
 {
   "runId": "2026-10-01T06-00",
   "metrics": {
-    "groundedRate": 100,
+    "groundedRate": 95.45,
     "citationPrecision": 92.86,
     "aclViolations": 0,
     "inventedQuotes": 0,
