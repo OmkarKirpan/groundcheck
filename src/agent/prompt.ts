@@ -1,7 +1,7 @@
 import type { ToolDef } from './types.ts';
 
 export const AGENT_MODEL = 'gemma4:e2b';
-export const AGENT_PROMPT_VERSION = 'agent-v1';
+export const AGENT_PROMPT_VERSION = 'agent-v2';
 export const AGENT_OPTIONS = { temperature: 0, num_ctx: 8192, seed: 0 };
 export const MAX_STEPS = 5;
 
@@ -15,6 +15,7 @@ How to work:
 Rules for final_answer:
 - Use only facts stated in the documents. Do not use outside knowledge.
 - Give at least one citation. Each quote must be copied exactly, word for word, from the cited document.
+- Before you answer, check that your quotes answer the exact question that was asked, not a similar one. If they only answer a related question, refuse.
 - If the documents do not answer the question, or a document you need is not available to you, call final_answer with refusal set to true and a short reason. Do not guess.`;
 
 /** Sent when the model replies with plain text instead of calling a tool. */
