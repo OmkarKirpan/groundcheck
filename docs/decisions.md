@@ -37,6 +37,16 @@ Settled on 2026-09-30 in a `/batch-grill-me` session: 3 rounds, and every recomm
 | D31 | **TypeScript runs on Node's built-in type stripping** (Node ≥ 22.18), no tsx or build step. TS 7, Vitest 5 | One fewer dependency. Needs `.ts` import paths and erasable-only syntax |
 | D32 | **`.gitattributes` forces LF** | Quotes are checked word for word and replay fixtures are keyed by a hash of the messages, so CRLF on Windows vs LF in CI would break both |
 | D33 | **BM25 statistics (IDF, average length) come only from the chunks the role can see** | Otherwise restricted docs would shift scores, a small side channel. Unit-tested |
+| D34 | **Native tool calling, no JSON-mode fallback.** `gemma4:e2b` on Ollama 0.35 calls tools reliably at temperature 0 with `think: false` | Checked live on 2026-10-01; the fallback isn't needed |
+| D35 | **A step is one tool call** (or one text-only reply, which gets a nudge). The loop stops after 5; G6 fails when it stopped without a final answer | Makes G6 meaningful even though the loop enforces the cap |
+| D36 | **`final_answer` with an answer needs at least one citation**; otherwise the error goes back to the model | Without it, an uncited answer would pass G1–G4 by having nothing to check |
+| D37 | **Grounded rate is over answerable cases only; citation precision is over unique docs cited per case; p95 latency is per case, nearest rank** | Written down so the numbers can be explained |
+| D38 | **G3 also fails when a quote's only source is a restricted doc**, even if an allowed doc is cited | Catches a leak hidden behind a wrong citation |
+| D39 | **Fixtures are keyed by a hash of the whole request** (model, messages, tools, options), not only (model, messages, tools) | Stricter: a temperature or context change also forces a re-record |
+| D40 | **The judge prompt is `docs/judge-rubric.md` loaded verbatim** | Rubric and prompt can't drift apart; editing the rubric forces a re-record |
+| D41 | **The judge scores only cases that ended in an answer or a refusal**; a run that hit the step limit has nothing to judge (G5/G6 already fail it) | Keeps the judge's numbers about the judge |
+| D42 | **Human labels carry the `runId` they were written for**, and agreement only uses labels for that run | Labels for an old run's outputs must not be compared with a new run's judge scores. The 20 are picked round-robin across the 5 categories (4 each), so the hard cases aren't crowded out by easy single-doc ones |
+| D43 | **Plural-only stemming in BM25**, added after run `2026-10-01T05-53` showed misses on "password"/"Passwords" and "meal"/"meals" (c014, c021) | The smallest fix for the failure the evals found. A full stemmer isn't needed for 30 docs |
 
 ## Facts checked on 2026-09-30 (check again at build time)
 - Ollama 0.18.2 is installed; the server wasn't running and no models were pulled. `gemma4:e2b` is in the Ollama library.

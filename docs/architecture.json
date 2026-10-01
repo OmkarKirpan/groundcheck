@@ -1,0 +1,302 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "groundcheck: eval harness for a permission-aware, cite-or-refuse agent",
+    "output": "architecture.html",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1320,
+      660
+    ]
+  },
+  "components": [
+    {
+      "id": "inputs",
+      "type": "database",
+      "label": "Cases + corpus",
+      "sublabel": "30 cases · 30 docs",
+      "pos": [
+        40,
+        300
+      ],
+      "size": [
+        140,
+        64
+      ]
+    },
+    {
+      "id": "ci",
+      "type": "cloud",
+      "label": "GitHub Actions",
+      "sublabel": "replay → gate",
+      "pos": [
+        40,
+        500
+      ],
+      "size": [
+        140,
+        64
+      ],
+      "tag": "no secrets"
+    },
+    {
+      "id": "runner",
+      "type": "backend",
+      "label": "Runner",
+      "sublabel": "src/runner",
+      "pos": [
+        260,
+        300
+      ],
+      "size": [
+        140,
+        64
+      ]
+    },
+    {
+      "id": "fixtures",
+      "type": "database",
+      "label": "Fixtures",
+      "sublabel": "fixtures/<runId>",
+      "pos": [
+        260,
+        500
+      ],
+      "size": [
+        140,
+        64
+      ],
+      "tag": "keyed by request hash"
+    },
+    {
+      "id": "agent",
+      "type": "backend",
+      "label": "Agent loop",
+      "sublabel": "gemma4:e2b · ≤5 steps",
+      "pos": [
+        480,
+        300
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "tools",
+      "type": "security",
+      "label": "Tools",
+      "sublabel": "role filter → BM25",
+      "pos": [
+        480,
+        110
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "tag": "search_docs · open_doc"
+    },
+    {
+      "id": "graders",
+      "type": "security",
+      "label": "Checks G1–G7",
+      "sublabel": "code, no model",
+      "pos": [
+        710,
+        300
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "judge",
+      "type": "external",
+      "label": "LLM judge",
+      "sublabel": "Nemotron 3 Super",
+      "pos": [
+        710,
+        500
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "tag": "J1 faithful · J2 correct"
+    },
+    {
+      "id": "labels",
+      "type": "database",
+      "label": "Human labels",
+      "sublabel": "20 blind",
+      "pos": [
+        940,
+        500
+      ],
+      "size": [
+        140,
+        64
+      ]
+    },
+    {
+      "id": "report",
+      "type": "database",
+      "label": "Report",
+      "sublabel": "results/<runId>",
+      "pos": [
+        940,
+        300
+      ],
+      "size": [
+        140,
+        64
+      ]
+    },
+    {
+      "id": "gate",
+      "type": "security",
+      "label": "Gate",
+      "sublabel": "vs baseline.json",
+      "pos": [
+        1140,
+        300
+      ],
+      "size": [
+        140,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Local machine · npm run eval:live",
+      "wraps": [
+        "runner",
+        "fixtures",
+        "agent",
+        "tools",
+        "graders",
+        "judge",
+        "labels",
+        "report",
+        "gate"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "CI · npm run eval:replay",
+      "wraps": [
+        "ci"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "load-cases",
+      "from": "inputs",
+      "to": "runner",
+      "label": "load"
+    },
+    {
+      "id": "run-case",
+      "from": "runner",
+      "to": "agent",
+      "label": "question + role",
+      "variant": "emphasis"
+    },
+    {
+      "id": "tool-calls",
+      "from": "agent",
+      "to": "tools",
+      "label": "tool calls"
+    },
+    {
+      "id": "record-calls",
+      "from": "runner",
+      "to": "fixtures",
+      "label": "record",
+      "variant": "dashed",
+      "labelAt": [
+        330,
+        432
+      ]
+    },
+    {
+      "id": "replay-calls",
+      "from": "fixtures",
+      "to": "ci",
+      "label": "replay",
+      "variant": "dashed"
+    },
+    {
+      "id": "grade-trace",
+      "from": "agent",
+      "to": "graders",
+      "label": "trace",
+      "variant": "emphasis"
+    },
+    {
+      "id": "judge-answers",
+      "from": "agent",
+      "to": "judge",
+      "label": "final answer"
+    },
+    {
+      "id": "check-judge",
+      "from": "labels",
+      "to": "judge",
+      "label": "≥80% agree"
+    },
+    {
+      "id": "write-report",
+      "from": "graders",
+      "to": "report",
+      "label": "metrics",
+      "variant": "emphasis"
+    },
+    {
+      "id": "judge-scores",
+      "from": "judge",
+      "to": "report",
+      "label": "J1, J2",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "gate-report",
+      "from": "report",
+      "to": "gate",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Hard gates",
+      "items": [
+        "0 permission leaks (G3)",
+        "0 invented quotes (G2)"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Against the baseline",
+      "items": [
+        "Quality may drop at most 5 points",
+        "Steps, tokens, p95 latency may rise at most 15%"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Record and replay",
+      "items": [
+        "Live runs record every model call",
+        "CI replays them; an unrecorded request fails the run"
+      ]
+    }
+  ]
+}

@@ -15,3 +15,6 @@ Thumbs.db
 # ad-hoc agent runs (official runs go to results/<date>.json + fixtures/)
 results/traces/
 results/replay.*
+
+# archify visual-check evidence (regenerate with archify visual-check)
+docs/*.visual-check.*
