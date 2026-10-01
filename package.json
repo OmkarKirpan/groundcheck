@@ -18,7 +18,9 @@
     "baseline": "node --disable-warning=ExperimentalWarning src/gate/cli.ts set",
     "judge": "node --disable-warning=ExperimentalWarning src/runner/eval.ts judge",
     "sheet:gold": "node --disable-warning=ExperimentalWarning src/runner/sheets.ts gold",
-    "sheet:labels": "node --disable-warning=ExperimentalWarning src/runner/sheets.ts labels"
+    "sheet:labels": "node --disable-warning=ExperimentalWarning src/runner/sheets.ts labels",
+    "compare": "node --disable-warning=ExperimentalWarning src/runner/compare-cli.ts",
+    "judge:probes": "node --disable-warning=ExperimentalWarning src/judge/probes-cli.ts"
   },
   "devDependencies": {
     "@types/node": "^22.20.4",

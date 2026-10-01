@@ -27,7 +27,8 @@ const cases = loadCases();
 
 /** The newest recorded run: the candidate a change is judged by. Run ids sort by time. */
 function newestRun(): string {
-  const runs = existsSync('fixtures') ? readdirSync('fixtures').sort() : [];
+  // Only run folders (named by time); fixtures/judge-probes and the like aren't runs.
+  const runs = existsSync('fixtures') ? readdirSync('fixtures').filter((d) => /^\d{4}-\d{2}-\d{2}T/.test(d)).sort() : [];
   if (runs.length === 0) throw new Error('no fixtures/ to replay; run npm run eval:live first');
   return runs.at(-1)!;
 }
@@ -88,8 +89,16 @@ if (mode === 'live') {
   await fetch(`${host}/api/generate`, { method: 'POST', body: JSON.stringify({ model: AGENT_MODEL, keep_alive: '30m' }) });
   const report = await runAgentEval(runId, { chat: recording(ollamaClient(host).chat, fixtures, 'agent') });
   const judge = liveJudge(fixtures);
-  if (judge) await addJudge(report, judge);
-  else console.log('\njudge skipped: OPENROUTER_API_KEY is not set (add it to .env, then npm run judge -- ' + runId + ')');
+  if (!judge) {
+    console.log(`\njudge skipped: OPENROUTER_API_KEY is not set (add it to .env, then npm run judge -- ${runId})`);
+  } else {
+    try {
+      await addJudge(report, judge);
+    } catch (e) {
+      // The agent run took ~20 minutes; don't lose it to a judge rate limit. Judged answers are cached.
+      console.error(`\njudge stopped: ${(e as Error).message.slice(0, 200)}\nThe agent results are saved; finish later with: npm run judge -- ${runId}`);
+    }
+  }
   writeReport(runId, report);
 } else if (mode === 'replay') {
   const { values, positionals } = parseArgs({ args: process.argv.slice(3), options: { write: { type: 'boolean' } }, allowPositionals: true });
