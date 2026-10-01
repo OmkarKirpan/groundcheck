@@ -48,6 +48,7 @@ Settled on 2026-09-30 in a `/batch-grill-me` session: 3 rounds, and every recomm
 | D42 | **Human labels carry the `runId` they were written for**, and agreement only uses labels for that run | Labels for an old run's outputs must not be compared with a new run's judge scores. The 20 are picked round-robin across the 5 categories (4 each), so the hard cases aren't crowded out by easy single-doc ones |
 | D43 | **Plural-only stemming in BM25**, added after run `2026-10-01T05-53` showed misses on "password"/"Passwords" and "meal"/"meals" (c014, c021) | The smallest fix for the failure the evals found. A full stemmer isn't needed for 30 docs |
 | D44 | **Live judge calls are cache-first**: a request already in `fixtures/<runId>/` is served from there, only new ones go to OpenRouter | Spec §7 ("judge responses are cached in the fixtures"). With 50 free calls a day, fixing one expected answer re-judges one case, not 30 |
+| D45 | **Rubric judge-v2: each part of a multi-part question is a main fact**; leaving one out scores at most 2 | Judge check on run 2026-10-01T06-00: the only disagreement with the human labels (c015) was a two-part question answered by half, scored 3 under judge-v1 as a missing "secondary detail" |
 
 ## Facts checked on 2026-09-30 (check again at build time)
 - Ollama 0.18.2 is installed; the server wasn't running and no models were pulled. `gemma4:e2b` is in the Ollama library.

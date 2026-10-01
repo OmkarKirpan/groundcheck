@@ -17,6 +17,8 @@ For a refusal: 4 if the reason states no facts about the company beyond saying t
 
 Compare with the expected answer. Wording does not matter; facts do.
 
+If the question asks for more than one thing, each thing it asks for is a main fact, not a secondary detail. An answer that leaves out any of them scores at most 2.
+
 - 4: Every fact in the expected answer is present and correct, and nothing wrong is added.
 - 3: The main fact is correct. A secondary detail from the expected answer is missing.
 - 2: Partly correct. The main fact is incomplete, or a wrong detail is added.

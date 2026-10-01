@@ -3,7 +3,7 @@ import type { Case } from '../runner/cases.ts';
 
 /** Primary first, then the fallback. Different family from the agent (Gemma 2B) where possible. */
 export const JUDGE_MODELS = ['nvidia/nemotron-3-super-120b-a12b:free', 'google/gemma-4-31b-it:free'] as const;
-export const JUDGE_PROMPT_VERSION = 'judge-v1';
+export const JUDGE_PROMPT_VERSION = 'judge-v2';
 export const RUBRIC_PATH = 'docs/judge-rubric.md';
 
 export interface JudgeRequest {

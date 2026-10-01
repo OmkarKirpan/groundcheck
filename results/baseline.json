@@ -8,7 +8,7 @@
     "avgSteps": 3.17,
     "totalTokens": 86810,
     "p95LatencyMs": 14954,
-    "j1Mean": 3.9,
-    "j2Mean": 3.5
+    "j1Mean": 3.93,
+    "j2Mean": 3.53
   }
 }

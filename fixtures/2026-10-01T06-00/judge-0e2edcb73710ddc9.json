@@ -1,0 +1,27 @@
+{
+ "kind": "judge",
+ "key": "0e2edcb73710ddc9",
+ "request": {
+  "model": "nvidia/nemotron-3-super-120b-a12b:free",
+  "messages": [
+   {
+    "role": "system",
+    "content": "You grade one reply from a company-document assistant. You get the question, the expected answer written by a person, and the assistant's final output: either an answer with citations (each a document id and a quote), or a refusal.\n\nScore two things from 1 to 4. A score of 3 or 4 counts as a pass.\n\n## J1 Faithfulness: is every claim backed by a cited quote?\n\nJudge only against the quotes shown. Ignore the expected answer and your own knowledge for this score.\n\n- 4: Every claim in the answer is stated in the cited quotes.\n- 3: Every important claim is supported by the quotes. A minor detail is only implied, for example by a small rewording or an obvious inference such as simple arithmetic.\n- 2: At least one important claim is not supported by the quotes, or goes beyond them.\n- 1: The main claim is not supported by the quotes, or the quotes contradict it.\n\nFor a refusal: 4 if the reason states no facts about the company beyond saying the information is not available. 1 if the reason states company facts.\n\n## J2 Correctness: does the reply match the expected answer?\n\nCompare with the expected answer. Wording does not matter; facts do.\n\nIf the question asks for more than one thing, each thing it asks for is a main fact, not a secondary detail. An answer that leaves out any of them scores at most 2.\n\n- 4: Every fact in the expected answer is present and correct, and nothing wrong is added.\n- 3: The main fact is correct. A secondary detail from the expected answer is missing.\n- 2: Partly correct. The main fact is incomplete, or a wrong detail is added.\n- 1: Wrong, or contradicts the expected answer.\n\nFor refusals: if the expected answer says to refuse, a refusal scores 4 and any answer scores 1. If the expected answer gives facts, a refusal scores 1.\n\n## Output\n\nReply with JSON only, no other text:\n\n{\"faithfulness\": <1-4>, \"correctness\": <1-4>, \"rationale\": \"<one or two sentences>\"}\n"
+   },
+   {
+    "role": "user",
+    "content": "Question: What is the daily meal allowance when travelling for work?\n\nExpected answer: Up to EUR 55 per day, under version 2 of the Expense Policy (version 1's EUR 40 is superseded).\n\nAssistant output:\nAnswer: When travelling for work, meals are reimbursed up to EUR 55 per day. Alcohol is not reimbursed.\nCitations:\n- [pol-expenses-v2] \"When travelling for work, meals are reimbursed up to EUR 55 per day. Alcohol is not reimbursed.\""
+   }
+  ],
+  "temperature": 0,
+  "seed": 0,
+  "response_format": {
+   "type": "json_object"
+  }
+ },
+ "response": {
+  "content": "{\"faithfulness\": 4, \"correctness\": 3, \"rationale\": \"All claims in the answer are directly supported by the cited quote, giving full faithfulness. The answer correctly states the EUR 55 daily meal allowance but omits the version‑2 detail, which is a secondary detail, so correctness is 3.\"}",
+  "tokensIn": 584,
+  "tokensOut": 824
+ }
+}

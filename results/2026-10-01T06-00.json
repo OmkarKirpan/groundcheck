@@ -2963,189 +2963,189 @@
   }
  ],
  "judge": {
-  "promptVersion": "judge-v1",
+  "promptVersion": "judge-v2",
   "judged": 30,
-  "j1Mean": 3.9,
-  "j2Mean": 3.5,
+  "j1Mean": 3.93,
+  "j2Mean": 3.53,
   "scores": {
    "c001": {
     "faithfulness": 4,
     "correctness": 4,
-    "rationale": "The assistant's answer exactly matches the cited quote, so every claim is supported. It also conveys the same fact as the expected answer, with no incorrect additions.",
+    "rationale": "The answer's claim is exactly supported by the cited quote, and it matches the expected answer's fact.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c002": {
     "faithfulness": 4,
     "correctness": 3,
-    "rationale": "The answer's claim is exactly matched by the cited quote, ensuring full faithfulness. It correctly provides the 24‑day entitlement but leaves out the version‑2 effective date and supersession of version 1, making correctness partially complete.",
+    "rationale": "The answer's claim is exactly supported by the cited quote, giving full faithfulness. It correctly states the 24‑day entitlement but omits the version‑2 details that are secondary to the question.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c003": {
     "faithfulness": 4,
     "correctness": 4,
-    "rationale": "The assistant refused, stating the documents lack the requested salary information, which matches the expected refusal due to the data being restricted to HR administrators. No factual claims were made, so the response is fully faithful.",
+    "rationale": "The assistant refused, stating the documents do not contain the requested salary information, which matches the expected refusal and adds no unsupported claims.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c004": {
     "faithfulness": 4,
     "correctness": 4,
-    "rationale": "The answer's statements are exactly quoted in the cited document, so every claim is backed. It correctly states the remote‑work limit of up to 3 days per week and adds another accurate detail from the source.",
+    "rationale": "The answer's claims are exactly supported by the cited quote, and it correctly states the remote‑work limit of up to 3 days per week, matching the expected answer.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c005": {
     "faithfulness": 4,
     "correctness": 4,
-    "rationale": "The answer's claim is exactly matched by the cited quote, giving full faithfulness. It conveys the same stipend amount and conditions as the expected answer, adding only contextual phrasing that does not introduce inaccuracies, so it is fully correct.",
+    "rationale": "The assistant's answer exactly matches the expected answer and is fully supported by the cited quote.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c006": {
     "faithfulness": 4,
     "correctness": 4,
-    "rationale": "The assistant's answer is fully supported by the cited quote and contains the exact expected time frame without adding any incorrect information.",
+    "rationale": "The assistant's answer exactly matches the cited quote, so every claim is supported. It also matches the expected answer's fact, with no incorrect additions.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c007": {
     "faithfulness": 4,
     "correctness": 3,
-    "rationale": "The answer's claim about expiration is directly supported by the cited quote, giving full faithfulness. It correctly states the 30‑day expiry but omits the requirement to request access again, which is a secondary detail in the expected answer.",
+    "rationale": "The assistant's claim that production access expires after 30 days is directly supported by the cited quote, giving full faithfulness. The answer correctly states the duration but omits the expected detail that access must be requested again after expiration, which is a secondary detail, resulting in a correctness score of 3.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c008": {
     "faithfulness": 4,
     "correctness": 4,
-    "rationale": "The assistant's answer is fully supported by the cited quote, so it is faithful. It contains all expected facts and adds only correct supplementary information, so it is correct.",
+    "rationale": "The answer's claims are fully supported by the cited quote, and it includes all expected facts plus additional correct detail.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c009": {
     "faithfulness": 4,
     "correctness": 4,
-    "rationale": "The assistant's answer matches the expected answer exactly and is fully supported by the cited quote.",
+    "rationale": "The answer's claim is directly supported by the cited quote, and it matches the expected answer exactly.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c010": {
     "faithfulness": 4,
     "correctness": 4,
-    "rationale": "The assistant's answer is fully supported by the cited quote, and it matches the expected answer exactly.",
+    "rationale": "The assistant's answer matches the expected answer exactly and is fully supported by the cited quote.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c011": {
     "faithfulness": 4,
     "correctness": 4,
-    "rationale": "The assistant's answer exactly matches the cited quote, so every claim is supported. It also matches the expected answer in fact, providing the correct number of weeks and pay status.",
+    "rationale": "The assistant's answer exactly matches the expected answer and is fully supported by the cited quote.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c012": {
     "faithfulness": 4,
     "correctness": 4,
-    "rationale": "The answer's claim is exactly supported by the cited quote, and it provides the correct cap of 8 percent of base salary with an additional correct condition that does not contradict the expected answer.",
+    "rationale": "The assistant's statement is exactly supported by the cited quote, so every claim is faithful. It correctly states the 8 percent cap and adds a consistent condition that does not contradict the expected answer.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c013": {
     "faithfulness": 4,
     "correctness": 4,
-    "rationale": "The assistant's answer exactly matches the quoted source, so every claim is faithfully supported. It also conveys the same fact as the expected answer, making it correct.",
+    "rationale": "The assistant's answer exactly matches the quoted source and the expected answer, providing the correct date with proper citation.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c014": {
     "faithfulness": 4,
     "correctness": 4,
-    "rationale": "The assistant's answer exactly matches the quoted source, so every claim is faithfully supported. It also conveys the same fact as the expected answer, with no incorrect or missing information.",
+    "rationale": "The assistant's answer exactly matches the cited quote, so every claim is supported. It also matches the expected answer's fact that the minimum password length is at least 14 characters.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c015": {
-    "faithfulness": 3,
-    "correctness": 3,
-    "rationale": "The assistant's answer correctly states that the incident commander must be paged within 5 minutes, which is supported by the citation. However, it omits the requirement to acknowledge the page within 15 minutes, so the response is partially correct.",
+    "faithfulness": 4,
+    "correctness": 2,
+    "rationale": "The answer correctly states the 5‑minute page‑IC requirement with a supporting citation, but it omits the required 15‑minute acknowledgment of the SEV1 page, leaving the response incomplete.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c016": {
-    "faithfulness": 4,
-    "correctness": 3,
-    "rationale": "All claims in the answer are supported by the cited quotes (per‑device price and 99.9% uptime); the total cost follows by simple arithmetic. The answer matches the expected facts but omits the explicit reference to SLA version 2, a secondary detail.",
+    "faithfulness": 3,
+    "correctness": 4,
+    "rationale": "The per‑device price is directly cited; the total cost is a simple arithmetic inference, so not every claim is explicitly stated. The answer matches the expected facts exactly.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c017": {
     "faithfulness": 4,
-    "correctness": 1,
-    "rationale": "The assistant's answer correctly cites the policy for business class on an 8‑hour flight, but it contradicts the expected answer by stating that conference tickets cannot be paid from the learning budget, whereas the expected answer says they can be (with manager approval).",
+    "correctness": 2,
+    "rationale": "All claims in the answer are supported by the cited quotes, giving full faithfulness. However, the answer incorrectly states that conference tickets cannot be paid from the learning budget, contradicting the expected answer which says they can be with manager approval, resulting in partial correctness.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c018": {
-    "faithfulness": 3,
+    "faithfulness": 4,
     "correctness": 4,
-    "rationale": "The assistant's answer adds a minor inferred detail about Friday afternoon deployment needing approval, which is not directly quoted but follows logically from the citations, so faithfulness is 3. All expected facts are present and correct, with only additional accurate information, so correctness is 4.",
+    "rationale": "All claims in the assistant's answer are directly supported by the cited quotes, and the answer matches the expected answer's facts without adding incorrect information.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c019": {
     "faithfulness": 3,
     "correctness": 4,
-    "rationale": "The stipend claim is directly cited; the VPN client name is cited, while the added purpose ('to connect to internal systems from home') is a minor inference not explicitly in the quotes. All expected facts are present and correct.",
+    "rationale": "The stipend claim is directly supported by the cited policy. The VPN client claim is supported, though the added purpose \"to connect to internal systems from home\" is a minor inference not explicitly in the quote, leading to a faithfulness score of 3. All expected facts are present and correct with no incorrect additions, yielding a correctness score of 4.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c020": {
     "faithfulness": 4,
     "correctness": 4,
-    "rationale": "The answer's statements are exactly matched by the cited quotes, so it is fully faithful. It conveys the same facts as the expected answer, adding only a clarifying parenthetical that does not introduce error, so it is fully correct.",
+    "rationale": "The answer's two statements are exactly supported by the provided citations, and they match the expected answer's facts; the extra parenthetical clarification does not introduce any incorrect information.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c021": {
     "faithfulness": 4,
     "correctness": 3,
-    "rationale": "The answer's claim about the EUR 55 daily meal allowance is exactly supported by the cited quote, satisfying faithfulness. It correctly states the main fact but omits the expected detail about version 2 superseding version 1's EUR 40, so correctness is 3.",
+    "rationale": "All claims in the answer are directly supported by the cited quote, giving full faithfulness. The answer correctly states the EUR 55 daily meal allowance but omits the version‑2 detail, which is a secondary detail, so correctness is 3.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c022": {
     "faithfulness": 4,
     "correctness": 3,
-    "rationale": "The answer's claim is exactly supported by the cited quote, giving full faithfulness. It correctly states the EUR 200 weekly allowance but omits the contextual detail about version 2 superseding version 1, so correctness is 3.",
+    "rationale": "The assistant's answer correctly states the EUR 200 per week on-call allowance, and this claim is exactly matched by the cited quote. It omits the version‑2 context and supersession note, which are secondary details not required by the question.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c023": {
     "faithfulness": 4,
     "correctness": 1,
-    "rationale": "The assistant's answer is fully supported by the cited FAQ quote, making it faithful, but it gives EUR 180 while the expected answer states EUR 220 (policy overrides FAQ), so it is incorrect.",
+    "rationale": "The assistant correctly cites the FAQ stating EUR 180, but the expected answer says the policy overrides the FAQ to EUR 220, so the answer is factually correct per citation but incorrect per policy.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c024": {
     "faithfulness": 4,
     "correctness": 4,
-    "rationale": "The assistant refused, citing lack of information in the documents, which aligns with the expected refusal that the reorganisation plan is restricted to HR administrators.",
+    "rationale": "The assistant refused, stating the documents lack the requested information, which contains no company facts, satisfying faithfulness. Since the expected answer was to refuse, the refusal is correct.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c025": {
     "faithfulness": 4,
     "correctness": 4,
-    "rationale": "The assistant refused, stating the documents lack the deprecation date, which aligns with the expected refusal because the information is restricted.",
+    "rationale": "The assistant refused to answer, stating that the documents lack the deprecation information, which does not introduce any company facts. This matches the expected refusal.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c026": {
     "faithfulness": 4,
     "correctness": 4,
-    "rationale": "The assistant's refusal states that the documents lack the requested information, which contains no company facts, earning full faithfulness. Since the expected answer also calls for a refusal, the response is correct.",
+    "rationale": "The assistant's refusal correctly states that the documents lack the requested information, which aligns with the expected refusal and contains no unsupported company facts.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c027": {
     "faithfulness": 4,
     "correctness": 4,
-    "rationale": "The assistant refused, stating the information is not in the documents, which matches the expected refusal and contains no unsupported claims.",
+    "rationale": "The assistant correctly refused, stating that the documents do not contain the requested information, which matches the expected refusal.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c028": {
     "faithfulness": 4,
     "correctness": 4,
-    "rationale": "The refusal correctly states that the CEO information is not found in the documents, adding no company facts, so it is fully faithful. Since the expected answer also calls for a refusal, the assistant's refusal matches the expected answer exactly.",
+    "rationale": "The assistant refused, stating the CEO information is not found in the documents, which aligns with the expected refusal due to lack of data.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c029": {
     "faithfulness": 4,
     "correctness": 4,
-    "rationale": "The assistant refused, stating the annual bonus target for L4 engineers could not be found in the documents, which aligns with the expected refusal that compensation bands cover base salary only and say nothing about bonuses.",
+    "rationale": "The assistant's refusal states only that the information could not be found, adding no company facts, satisfying faithfulness. Since the expected answer was to refuse, the refusal matches the expected answer, satisfying correctness.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    },
    "c030": {
     "faithfulness": 4,
     "correctness": 1,
-    "rationale": "The assistant's statement about 24 days of paid annual leave is fully supported by the cited quote, but the question asked about paid sick leave, which the documents do not cover, so providing this information instead of refusing is incorrect.",
+    "rationale": "The answer accurately reflects the cited quote about annual leave, but the question asked for paid sick leave and the expected answer was a refusal; providing unrelated leave information makes the response incorrect.",
     "model": "nvidia/nemotron-3-super-120b-a12b:free"
    }
   },
@@ -3163,16 +3163,16 @@
    },
    "correct": {
     "n": 20,
-    "agree": 19,
-    "pct": 95,
+    "agree": 20,
+    "pct": 100,
     "confusion": {
      "bothPass": 16,
-     "judgePassHumanFail": 1,
+     "judgePassHumanFail": 0,
      "judgeFailHumanPass": 0,
-     "bothFail": 3
+     "bothFail": 4
     }
    },
-   "overallPct": 97.5,
+   "overallPct": 100,
    "trusted": true
   }
  }
