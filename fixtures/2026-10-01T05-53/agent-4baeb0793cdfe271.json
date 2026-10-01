@@ -1,0 +1,170 @@
+{
+ "kind": "agent",
+ "key": "4baeb0793cdfe271",
+ "request": {
+  "model": "gemma4:e2b",
+  "messages": [
+   {
+    "role": "system",
+    "content": "You are the document assistant for Halvicor Systems. You answer questions using only the company documents you can reach with your tools. The user's access level decides which documents you can see.\n\nHow to work:\n1. Call search_docs first. Use open_doc to read a whole document when a snippet is not enough or when you need to check its status.\n2. Prefer documents with status \"current\". Never rely on a document with status \"superseded\" when a current version exists.\n3. Finish by calling final_answer. You have at most 5 tool calls in total, including final_answer.\n\nRules for final_answer:\n- Use only facts stated in the documents. Do not use outside knowledge.\n- Give at least one citation. Each quote must be copied exactly, word for word, from the cited document.\n- If the documents do not answer the question, or a document you need is not available to you, call final_answer with refusal set to true and a short reason. Do not guess."
+   },
+   {
+    "role": "user",
+    "content": "When will the Pune support team reorganisation be announced?"
+   },
+   {
+    "role": "assistant",
+    "content": "",
+    "tool_calls": [
+     {
+      "id": "call_qlha0si8",
+      "function": {
+       "index": 0,
+       "name": "search_docs",
+       "arguments": {
+        "query": "Pune support team reorganisation announcement"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "role": "tool",
+    "tool_name": "search_docs",
+    "content": "[{\"docId\":\"faq-offices\",\"title\":\"Offices FAQ\",\"snippet\":\"# Offices FAQ\\n\\n## Where are the offices?\\n\\nHalvicor Systems has offices in Lisbon and Pune. The head office is in Lisbon.\",\"score\":4.5},{\"docId\":\"rb-access-request\",\"title\":\"Production Access Runbook\",\"snippet\":\"## Break-glass access\\n\\nBreak-glass access is for emergencies only. Every use is logged and reviewed by the security team within 24 hours.\",\"score\":3.323},{\"docId\":\"pol-security\",\"title\":\"Information Security Policy\",\"snippet\":\"## Devices\\n\\nLaptops lock automatically after 5 minutes without activity. Report a lost or stolen laptop to the security team within 1 hour.\",\"score\":3.252}]"
+   },
+   {
+    "role": "assistant",
+    "content": "",
+    "tool_calls": [
+     {
+      "id": "call_w43xgwr4",
+      "function": {
+       "index": 0,
+       "name": "open_doc",
+       "arguments": {
+        "docId": "faq-offices"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "role": "tool",
+    "tool_name": "open_doc",
+    "content": "{\"docId\":\"faq-offices\",\"title\":\"Offices FAQ\",\"version\":1,\"status\":\"current\",\"body\":\"# Offices FAQ\\n\\n## Where are the offices?\\n\\nHalvicor Systems has offices in Lisbon and Pune. The head office is in Lisbon.\\n\\n## When is the Lisbon office open?\\n\\nThe Lisbon office is open from 07:30 to 20:00 on working days.\\n\\n## How do visitors get in?\\n\\nVisitors sign in at reception and get a day badge. The host must meet them at reception.\"}"
+   }
+  ],
+  "tools": [
+   {
+    "type": "function",
+    "function": {
+     "name": "search_docs",
+     "description": "Keyword search over the company documents you are allowed to see. Returns up to 5 matching paragraphs.",
+     "parameters": {
+      "type": "object",
+      "properties": {
+       "query": {
+        "type": "string",
+        "description": "Keywords to search for."
+       }
+      },
+      "required": [
+       "query"
+      ]
+     }
+    }
+   },
+   {
+    "type": "function",
+    "function": {
+     "name": "open_doc",
+     "description": "Read a whole document, including its version and status (current or superseded).",
+     "parameters": {
+      "type": "object",
+      "properties": {
+       "docId": {
+        "type": "string",
+        "description": "The docId from a search result."
+       }
+      },
+      "required": [
+       "docId"
+      ]
+     }
+    }
+   },
+   {
+    "type": "function",
+    "function": {
+     "name": "final_answer",
+     "description": "Finish with an answer and its citations, or with a refusal.",
+     "parameters": {
+      "type": "object",
+      "properties": {
+       "answer": {
+        "type": "string",
+        "description": "The answer, using only facts from the documents."
+       },
+       "citations": {
+        "type": "array",
+        "description": "At least one source. Each quote must be copied exactly, word for word, from the document.",
+        "items": {
+         "type": "object",
+         "properties": {
+          "docId": {
+           "type": "string"
+          },
+          "quote": {
+           "type": "string"
+          }
+         },
+         "required": [
+          "docId",
+          "quote"
+         ]
+        }
+       },
+       "refusal": {
+        "type": "boolean",
+        "description": "Set to true when the documents do not answer the question."
+       },
+       "reason": {
+        "type": "string",
+        "description": "Why you are refusing."
+       }
+      }
+     }
+    }
+   }
+  ],
+  "options": {
+   "temperature": 0,
+   "num_ctx": 8192,
+   "seed": 0
+  },
+  "think": false
+ },
+ "response": {
+  "message": {
+   "role": "assistant",
+   "content": "",
+   "tool_calls": [
+    {
+     "id": "call_qkkf5py8",
+     "function": {
+      "index": 0,
+      "name": "final_answer",
+      "arguments": {
+       "answer": "The documents do not contain information about when the Pune support team reorganisation will be announced.",
+       "refusal": true
+      }
+     }
+    }
+   ]
+  },
+  "tokensIn": 918,
+  "tokensOut": 37,
+  "latencyMs": 2984
+ }
+}
