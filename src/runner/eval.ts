@@ -10,7 +10,7 @@ import { LABELS_PATH, loadLabels } from '../judge/agreement.ts';
 import { RUBRIC_PATH, type JudgeCall, type JudgeReply, type JudgeRequest } from '../judge/judge.ts';
 import { openRouterCall } from '../judge/openrouter.ts';
 import { judgeRun } from '../judge/run.ts';
-import { recording, replaying } from '../replay/replay.ts';
+import { cached, recording, replaying } from '../replay/replay.ts';
 import { loadCorpus } from '../retrieval/corpus.ts';
 import { loadCases } from './cases.ts';
 import { buildReport, renderMarkdown, runEval, type Report } from './run.ts';
@@ -50,7 +50,7 @@ async function addJudge(report: Report, call: JudgeCall) {
 
 function liveJudge(fixtures: string): JudgeCall | null {
   const key = process.env.OPENROUTER_API_KEY;
-  return key ? recording(openRouterCall(key), fixtures, 'judge') : null;
+  return key ? cached(openRouterCall(key), fixtures, 'judge') : null;
 }
 
 async function runAgentEval(runId: string, client: ModelClient): Promise<Report> {

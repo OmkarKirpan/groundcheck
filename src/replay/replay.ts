@@ -38,15 +38,29 @@ export function recording<Req, Res>(call: (req: Req) => Promise<Res>, dir: strin
   };
 }
 
+function loadFixtures<Res>(dir: string, kind: string): Map<string, Res> {
+  const fixtures = new Map<string, Res>();
+  if (!existsSync(dir)) return fixtures;
+  for (const file of readdirSync(dir).filter((f) => f.startsWith(`${kind}-`) && f.endsWith('.json'))) {
+    const fixture = JSON.parse(readFileSync(join(dir, file), 'utf8')) as Fixture<unknown, Res>;
+    fixtures.set(fixture.key, fixture.response);
+  }
+  return fixtures;
+}
+
+/** Recorded response if there is one, otherwise a live call that gets recorded. Saves rate-limited judge calls. */
+export function cached<Req, Res>(call: (req: Req) => Promise<Res>, dir: string, kind: string) {
+  const fixtures = loadFixtures<Res>(dir, kind);
+  const live = recording(call, dir, kind);
+  return async (request: Req): Promise<Res> => {
+    const hit = fixtures.get(requestKey(request));
+    return hit === undefined ? live(request) : structuredClone(hit);
+  };
+}
+
 /** Serves recorded responses. Any request that wasn't recorded fails, so prompt or tool changes show up. */
 export function replaying<Req, Res>(dir: string, kind: string) {
-  const fixtures = new Map<string, Res>();
-  if (existsSync(dir)) {
-    for (const file of readdirSync(dir).filter((f) => f.startsWith(`${kind}-`) && f.endsWith('.json'))) {
-      const fixture = JSON.parse(readFileSync(join(dir, file), 'utf8')) as Fixture<Req, Res>;
-      fixtures.set(fixture.key, fixture.response);
-    }
-  }
+  const fixtures = loadFixtures<Res>(dir, kind);
   return async (request: Req): Promise<Res> => {
     const key = requestKey(request);
     const response = fixtures.get(key);

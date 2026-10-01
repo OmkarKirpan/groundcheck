@@ -2,7 +2,7 @@ import { mkdtempSync, readdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { recording, replaying, requestKey } from '../../src/replay/replay.ts';
+import { cached, recording, replaying, requestKey } from '../../src/replay/replay.ts';
 
 const tmp = () => mkdtempSync(join(tmpdir(), 'groundcheck-'));
 
@@ -39,6 +39,19 @@ describe('recording and replaying', () => {
     await recording(async () => ({ a: 1 }), dir, 'agent')({ q: 'one' });
     const replay = replaying(dir, 'agent');
     await expect(replay({ q: 'changed prompt' })).rejects.toThrow(/not recorded/);
+  });
+
+  it('cached: serves a recorded response and only calls live for new requests', async () => {
+    const dir = tmp();
+    let calls = 0;
+    const live = async (req: { q: string }) => ({ a: req.q, n: ++calls });
+    await recording(live, dir, 'judge')({ q: 'old' });
+
+    const judge = cached(live, dir, 'judge');
+    expect(await judge({ q: 'old' })).toEqual({ a: 'old', n: 1 });
+    expect(await judge({ q: 'new' })).toEqual({ a: 'new', n: 2 });
+    expect(calls).toBe(2);
+    expect(await replaying(dir, 'judge')({ q: 'new' })).toEqual({ a: 'new', n: 2 });
   });
 
   it('keeps kinds apart, so a judge fixture never answers an agent request', async () => {
