@@ -11,7 +11,8 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "agent": "node --disable-warning=ExperimentalWarning src/runner/cli.ts"
   },
   "devDependencies": {
     "@types/node": "^22.20.4",
