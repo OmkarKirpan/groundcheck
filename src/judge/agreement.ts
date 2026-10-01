@@ -59,9 +59,33 @@ export function agreement(
   return { faithful, correct, overallPct, trusted: overallPct >= MIN_AGREEMENT_PCT };
 }
 
+const isLabel = (v: unknown) => v === 'pass' || v === 'fail';
+
+/** Lines still marked "?" (not labelled yet) are skipped. */
 export function loadLabels(path = LABELS_PATH): HumanLabel[] {
   return readFileSync(path, 'utf8')
     .split('\n')
     .filter((l) => l.trim())
-    .map((l) => JSON.parse(l) as HumanLabel);
+    .map((l) => JSON.parse(l) as HumanLabel)
+    .filter((l) => isLabel(l.faithful) && isLabel(l.correct));
+}
+
+export const LABEL_COUNT = 20;
+
+/** Which cases a person labels: round-robin across categories, so the hard categories aren't crowded out. */
+export function pickLabelCases(
+  outcomes: { caseId: string; category: string; run: { final: unknown } }[],
+  n = LABEL_COUNT,
+): string[] {
+  const byCategory = new Map<string, string[]>();
+  for (const o of [...outcomes].sort((a, b) => a.caseId.localeCompare(b.caseId))) {
+    if (!o.run.final) continue;
+    byCategory.set(o.category, [...(byCategory.get(o.category) ?? []), o.caseId]);
+  }
+  const queues = [...byCategory.values()];
+  const picked: string[] = [];
+  while (picked.length < n && queues.some((q) => q.length)) {
+    for (const q of queues) if (q.length && picked.length < n) picked.push(q.shift()!);
+  }
+  return picked.sort();
 }

@@ -1,5 +1,57 @@
+import { mkdtempSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { agreement, type HumanLabel } from '../../src/judge/agreement.ts';
+import { agreement, loadLabels, pickLabelCases, type HumanLabel } from '../../src/judge/agreement.ts';
+import type { AgentRun } from '../../src/agent/loop.ts';
+
+describe('loadLabels', () => {
+  it('skips lines that are not labelled yet', () => {
+    const path = join(mkdtempSync(join(tmpdir(), 'gc-')), 'labels.jsonl');
+    writeFileSync(
+      path,
+      [
+        '{"runId":"r1","caseId":"c1","faithful":"pass","correct":"fail"}',
+        '{"runId":"r1","caseId":"c2","faithful":"?","correct":"?"}',
+        '',
+      ].join('\n'),
+    );
+    expect(loadLabels(path)).toEqual([{ runId: 'r1', caseId: 'c1', faithful: 'pass', correct: 'fail' }]);
+  });
+});
+
+describe('pickLabelCases', () => {
+  const finished: AgentRun = { final: { kind: 'refusal', reason: '' }, stopReason: 'final_answer', trace: [] };
+  const unfinished: AgentRun = { final: null, stopReason: 'step_limit', trace: [] };
+  const many = (prefix: string, category: string, count: number) =>
+    Array.from({ length: count }, (_, i) => ({ caseId: `${prefix}${String(i).padStart(2, '0')}`, category, run: finished }));
+  // The spec mix: 12 / 6 / 4 / 4 / 4.
+  const outcomes = [
+    ...many('s', 'single-doc', 12),
+    ...many('m', 'multi-doc', 6),
+    ...many('c', 'stale/conflict', 4),
+    ...many('p', 'permission', 4),
+    ...many('u', 'unanswerable', 4),
+  ];
+  const countBy = (ids: string[], prefix: string) => ids.filter((id) => id.startsWith(prefix)).length;
+
+  it('takes 20 cases round-robin across categories, so every category is labelled', () => {
+    const picked = pickLabelCases(outcomes);
+    expect(picked).toHaveLength(20);
+    expect(['s', 'm', 'c', 'p', 'u'].map((p) => countBy(picked, p))).toEqual([4, 4, 4, 4, 4]);
+  });
+
+  it('keeps going in the bigger categories once a small one runs out', () => {
+    const picked = pickLabelCases(outcomes.filter((o) => !o.caseId.startsWith('u')));
+    expect(picked).toHaveLength(20);
+    expect(['s', 'm', 'c', 'p'].map((p) => countBy(picked, p))).toEqual([6, 6, 4, 4]);
+  });
+
+  it('skips cases that never reached a final answer', () => {
+    const picked = pickLabelCases([{ caseId: 'x', category: 'single-doc', run: unfinished }, ...outcomes]);
+    expect(picked).not.toContain('x');
+  });
+});
 
 const label = (caseId: string, faithful: 'pass' | 'fail', correct: 'pass' | 'fail'): HumanLabel => ({ runId: 'r1', caseId, faithful, correct });
 

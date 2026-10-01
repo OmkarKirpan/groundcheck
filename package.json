@@ -16,7 +16,9 @@
     "eval:replay": "node --disable-warning=ExperimentalWarning src/runner/eval.ts replay",
     "gate": "node --disable-warning=ExperimentalWarning src/gate/cli.ts",
     "baseline": "node --disable-warning=ExperimentalWarning src/gate/cli.ts set",
-    "judge": "node --disable-warning=ExperimentalWarning src/runner/eval.ts judge"
+    "judge": "node --disable-warning=ExperimentalWarning src/runner/eval.ts judge",
+    "sheet:gold": "node --disable-warning=ExperimentalWarning src/runner/sheets.ts gold",
+    "sheet:labels": "node --disable-warning=ExperimentalWarning src/runner/sheets.ts labels"
   },
   "devDependencies": {
     "@types/node": "^22.20.4",
