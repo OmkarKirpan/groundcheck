@@ -36,6 +36,7 @@ The interactive version is [`docs/architecture.html`](docs/architecture.html) (o
 - hard gates: **0 permission violations, 0 invented quotes**
 - quality (grounded rate, citation precision, J1, J2) may drop at most 5 points
 - budget (average steps, total tokens, p95 latency) may rise at most 15%
+- per case: **no check may go from pass to fail on any case** (see "How noisy is it?" below for why this rule exists)
 
 **Record and replay.** `npm run eval:live` runs on a laptop and records every model request and response under `fixtures/<runId>/`, keyed by a hash of the whole request. `npm run eval:replay` serves them back with no model and no secrets, and **fails on any request that wasn't recorded**, so changing a prompt, a tool or the retrieval shows up immediately. It also fails if the committed `results/<runId>.json` isn't exactly what the current code produces from those recordings.
 
@@ -49,9 +50,9 @@ Baseline run [`2026-10-01T06-00`](results/2026-10-01T06-00.md), next to the firs
 
 | Metric | First run | Baseline |
 |---|---|---|
-| Grounded answer rate (answered; G1–G4 and G8 pass) | 90.9% | **95.5%** |
-| Citation precision | 92.3% | 92.9% |
-| Refusal accuracy (G5) | 90.0% | 96.7% |
+| Grounded answer rate (answered; G1–G4 and G8 pass) | 90.9% | **95.5%** (95% CI 78–99%) |
+| Citation precision | 92.3% | 92.9% (95% CI 77–98%) |
+| Refusal accuracy (G5) | 90.0% | 96.7% (95% CI 83–99%) |
 | Permission violations (hard gate) | 0 | 0 |
 | Invented quotes (hard gate) | 0 | 0 |
 | Average steps | 3.2 | 3.17 |
@@ -79,7 +80,17 @@ With the first rubric (`judge-v1`), the judge agreed with the blind human labels
 
 The fix was one sentence in the [rubric](docs/judge-rubric.md): each thing a multi-part question asks for is a main fact, and leaving one out scores at most 2 ([D45](docs/decisions.md)). Re-judged with `judge-v2`, c015 drops to 2 and agreement is **40 of 40 (100%)**. No other case changed between pass and fail, but three moved by one point within their band (c016, c017, c018): at temperature 0 a single rubric sentence still nudges borderline scores, so read the judge as pass/fail, not as a fine-grained score.
 
-One caveat: **J1's 100% agreement is weak evidence.** None of the 20 labelled answers was unfaithful (the agent invented no quotes), so this sample can't show whether the judge would catch an unfaithful one.
+One caveat: **J1's 100% agreement is weak evidence.** None of the 20 labelled answers was unfaithful (the agent invented no quotes), so this sample can't show whether the judge would catch an unfaithful one. That's what the [judge probes](cases/judge-probes.jsonl) are for: 9 answers with a planted mistake (a changed number, an invented claim, an answer that contradicts its own quote, a right answer with an irrelevant quote) and 3 untouched controls, all with real quotes so only the judge can catch them. `npm run judge:probes` reports how many it catches. *Not run yet: the free judge quota ran out for the day.*
+
+### How noisy is it?
+
+The 95% intervals in the results table are wide: 30 cases is a small sample, and on 22 answerable cases **one case is worth 4.5 points** of grounded rate. The gate allows a 5-point drop, so on averages alone it tolerates one case getting worse.
+
+To see what "same code, different run" looks like, the unchanged agent was run again ([`2026-10-01T07-07`](results/2026-10-01T07-07.md)). Even at temperature 0 with a fixed seed, **7 of 30 answers came back worded differently**: GPU floating-point order isn't fixed. But **no check verdict flipped** and every rate was identical; only latency moved (p95 15.0 s → 13.2 s, about 12%, close to the 15% budget). So, on this setup, wording is noise and verdicts are signal. That's why the gate now also fails when any single check goes from pass to fail on any case ([D53](docs/decisions.md)).
+
+### A change the gate rejected
+
+To test the whole loop on a real agent change, the prompt gained one generic rule: *"check that your quotes answer the exact question that was asked, not a similar one; if they only answer a related question, refuse"* (`agent-v2`, aimed at c030). The recorded run (`2026-10-01T07-13`, in [pull request #1](https://github.com/OmkarKirpan/groundcheck/pull/1)) shows it **didn't fix c030**, and **c016 regressed**: the agent opened only the superseded SLA and answered 99.5% instead of 99.9% (G4 fails). The grounded rate fell 95.5% → 90.9%, exactly one case, so the averages alone would have let it through. The per-case rule caught it, and CI fails the pull request. The change stays unmerged.
 
 ## Run it
 
